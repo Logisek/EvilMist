@@ -1,0 +1,5 @@
+msal>=1.24.0
+requests>=2.31.0
+
+# Optional: enables additional auth methods (SharedCache, VSCode, DefaultCredential, etc.)
+azure-identity>=1.14.0
