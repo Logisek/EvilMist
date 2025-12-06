@@ -13047,13 +13047,40 @@ def main():
         elif option == "0":
             print("\nGoodbye!")
             break
-
         else:
             print("[!] Invalid option.")
+
+def show_logisek_banner():
+    print("")
+
+    ascii_art = r"""
+                                                                      
+         _____   ______ _____ _______ _______ _     _
+ |      |     | |  ____   |   |______ |______ |____/ 
+ |_____ |_____| |_____| __|__ ______| |______ |    \_
+                                                                  
+                                                                      
+"""
+
+    
+    try:
+        from colorama import Fore, Style
+        print(f"{Fore.MAGENTA}{ascii_art}{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}  EvilMist - EntraID Reconnaissance v1.0{Style.RESET_ALL}")
+    except ImportError:
+        
+        print(ascii_art)
+
+    print("  GNU General Public License v3.0")
+    print("  https://logisek.com")
+    print("  info@logisek.com")
+    print("")
+    print("")
 
 
 if __name__ == "__main__":
     try:
+        show_logisek_banner()
         main()
     except KeyboardInterrupt:
         print("\n\n[!] Interrupted by user (Ctrl+C). Exiting...")
