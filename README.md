@@ -11,15 +11,15 @@ EvilMist is a collection of scripts and utilities designed to support cloud pene
 Comprehensive Azure Entra ID (Azure AD) user enumeration and security assessment tool, available in both PowerShell and Python versions.
 
 **Key Features:**
-- 🔍 **15+ User Enumeration Methods** - Works even when direct `/users` access is blocked
-- 🛡️ **Security Assessment** - MFA status, privileged roles, stale accounts, guest users
-- 🔐 **Credential Attack Surface** - SSPR, legacy auth, app passwords analysis
-- 📋 **Conditional Access Analysis** - Policy enumeration and gap detection
-- 💻 **Device & Intune Enumeration** - Managed devices, compliance policies
-- 🎯 **Attack Path Analysis** - Privilege escalation paths and lateral movement
-- ⚡ **Power Platform** - Power Apps and Power Automate flow enumeration
-- 📊 **Export Options** - BloodHound/AzureHound JSON, HTML reports, CSV/JSON
-- 🥷 **Stealth Mode** - Configurable delays and jitter to avoid detection
+- **15+ User Enumeration Methods** - Works even when direct `/users` access is blocked
+- **Security Assessment** - MFA status, privileged roles, stale accounts, guest users
+- **Credential Attack Surface** - SSPR, legacy auth, app passwords analysis
+- **Conditional Access Analysis** - Policy enumeration and gap detection
+- **Device & Intune Enumeration** - Managed devices, compliance policies
+- **Attack Path Analysis** - Privilege escalation paths and lateral movement
+- **Power Platform** - Power Apps and Power Automate flow enumeration
+- **Export Options** - BloodHound/AzureHound JSON, HTML reports, CSV/JSON
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
 
 | Version | Documentation | File |
 |---------|---------------|------|
@@ -168,3 +168,5 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 - [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/) - Primary data source
 - [BloodHound](https://github.com/BloodHoundAD/BloodHound) - Attack path analysis inspiration
 - [AzureHound](https://github.com/BloodHoundAD/AzureHound) - Azure data collection format
+
+---
