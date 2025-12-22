@@ -49,6 +49,29 @@ Focused security assessment tool to identify Azure Entra ID users without Multi-
 
 ---
 
+### Guest Account Enumeration
+
+Comprehensive guest account analysis tool to identify, analyze, and assess the security posture of external users in Azure Entra ID. Essential for guest access governance and security audits.
+
+**Key Features:**
+- **Guest Account Discovery** - Enumerate all guest users in the tenant
+- **MFA Status Detection** - Identify guests without Multi-Factor Authentication
+- **Last Sign-In Tracking** - Shows login date/time and activity patterns for guests
+- **Guest Domain Extraction** - Identifies originating organizations of guest users
+- **Invite Status Tracking** - Shows accepted, pending, or expired invitations
+- **Risk Assessment** - Categorizes guests by risk level (HIGH/MEDIUM/LOW)
+- **Activity Analytics** - Sign-in statistics, stale accounts, unused invites
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only guests without MFA or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive guest details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md) | `Invoke-EntraGuestCheck.ps1` |
+
+---
+
 ## Quick Start
 
 ### Enumerate-EntraUsers (PowerShell)
@@ -105,6 +128,26 @@ python entra_recon.py
 
 📖 **Full documentation:** [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md)
 
+### Guest Account Enumeration (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Enumerate all guest accounts
+.\Invoke-EntraGuestCheck.ps1
+
+# Export results to CSV
+.\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-accounts.csv"
+
+# Show only guests without MFA in matrix view
+.\Invoke-EntraGuestCheck.ps1 -Matrix -OnlyNoMFA
+
+# Include disabled guests with stealth mode
+.\Invoke-EntraGuestCheck.ps1 -IncludeDisabledGuests -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md)
+
 ---
 
 ## Documentation
@@ -114,6 +157,7 @@ python entra_recon.py
 | [EntraRecon-PS1.md](EntraRecon-PS1.md) | Full PowerShell script documentation including all parameters, features, and usage examples |
 | [EntraRecon-PY.md](EntraRecon-PY.md) | Full Python script documentation including authentication methods, stealth configuration, and examples |
 | [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md) | MFA Security Check documentation including shared mailbox detection, sign-in tracking, and risk assessment |
+| [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md) | Guest Account Enumeration documentation including guest domain extraction, invite tracking, and security analysis |
 
 ---
 
@@ -145,23 +189,25 @@ Both versions provide the same core functionality:
 
 ### Toolkit Comparison
 
-| Feature | Enumerate-EntraUsers | MFA Security Check |
-|---------|---------------------|-------------------|
-| **Purpose** | Comprehensive user enumeration | Focused MFA security audit |
-| User Enumeration | 15+ methods | Standard method |
-| MFA Detection | Basic check | Advanced with method types |
-| Shared Mailbox Detection | ❌ | ✅ Automatic |
-| Last Sign-In Tracking | ✅ | ✅ With analytics |
-| Sign-In Capability Check | ❌ | ✅ |
-| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) |
-| Activity Analytics | Limited | Detailed (stale/recent/never) |
-| Matrix View | ❌ | ✅ |
-| Department Analysis | ✅ | ✅ With statistics |
-| BloodHound Export | ✅ | ❌ |
-| HTML Report | ✅ | ❌ |
-| CSV/JSON Export | ✅ | ✅ Enhanced fields |
-| Stealth Mode | ✅ | ✅ |
-| **Best For** | Red team reconnaissance | MFA compliance audits |
+| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration |
+|---------|---------------------|-------------------|---------------------------|
+| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance |
+| User Enumeration | 15+ methods | Standard method | Guest-focused |
+| MFA Detection | Basic check | Advanced with method types | Advanced with method types |
+| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) |
+| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic |
+| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates |
+| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics |
+| Sign-In Capability Check | ❌ | ✅ | ✅ |
+| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) |
+| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) |
+| Matrix View | ❌ | ✅ | ✅ |
+| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics |
+| BloodHound Export | ✅ | ❌ | ❌ |
+| HTML Report | ✅ | ❌ | ❌ |
+| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields |
+| Stealth Mode | ✅ | ✅ | ✅ |
+| **Best For** | Red team reconnaissance | MFA compliance audits | External user security |
 
 ---
 
