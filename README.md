@@ -72,6 +72,32 @@ Comprehensive guest account analysis tool to identify, analyze, and assess the s
 
 ---
 
+### Critical Administrative Access Check
+
+Comprehensive security assessment tool to identify Azure Entra ID users with access to 10 critical administrative applications including PowerShell tools, management portals, core Microsoft 365 services, and privileged identity management. Essential for privileged access governance and administrative tool auditing.
+
+**Key Features:**
+- **Critical Access Discovery** - Enumerate users with administrative application access across all tiers
+- **Explicit Assignment Focus** - Shows users with elevated/administrative access (not basic user access)
+- **Default Access Detection** - Automatically detects and warns about apps with default access
+- **Security-Focused Results** - Filters out noise from basic user access to focus on privileged users
+- **Multiple Application Coverage** - Tracks 10 critical apps: Azure/AD PowerShell, Azure CLI, Graph Tools, M365/Azure Portals, Exchange/SharePoint Online, and PIM
+- **MFA Status Detection** - Identify privileged users without Multi-Factor Authentication
+- **Last Sign-In Tracking** - Shows login date/time and activity patterns
+- **Assignment Tracking** - Shows when users were granted management access
+- **Risk Assessment** - Categorizes users by risk level (HIGH/MEDIUM/LOW)
+- **Activity Analytics** - Sign-in statistics, stale accounts, inactive users
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only users without MFA or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive access details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md) | `Invoke-EntraAppAccess.ps1` |
+
+---
+
 ## Quick Start
 
 ### Enumerate-EntraUsers (PowerShell)
@@ -148,6 +174,26 @@ python entra_recon.py
 
 📖 **Full documentation:** [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md)
 
+### Critical Administrative Access Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Check users with critical administrative access (10 apps)
+.\Invoke-EntraAppAccess.ps1
+
+# Export results to CSV
+.\Invoke-EntraAppAccess.ps1 -ExportPath "app-access.csv"
+
+# Show only users without MFA in matrix view
+.\Invoke-EntraAppAccess.ps1 -Matrix -OnlyNoMFA
+
+# Stealth mode scan
+.\Invoke-EntraAppAccess.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md)
+
 ---
 
 ## Documentation
@@ -158,6 +204,7 @@ python entra_recon.py
 | [EntraRecon-PY.md](EntraRecon-PY.md) | Full Python script documentation including authentication methods, stealth configuration, and examples |
 | [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md) | MFA Security Check documentation including shared mailbox detection, sign-in tracking, and risk assessment |
 | [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md) | Guest Account Enumeration documentation including guest domain extraction, invite tracking, and security analysis |
+| [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md) | PowerShell & Graph CLI Access Check documentation including app access tracking, assignment dates, and privileged access analysis |
 
 ---
 
@@ -189,25 +236,27 @@ Both versions provide the same core functionality:
 
 ### Toolkit Comparison
 
-| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration |
-|---------|---------------------|-------------------|---------------------------|
-| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance |
-| User Enumeration | 15+ methods | Standard method | Guest-focused |
-| MFA Detection | Basic check | Advanced with method types | Advanced with method types |
-| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) |
-| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic |
-| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates |
-| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics |
-| Sign-In Capability Check | ❌ | ✅ | ✅ |
-| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) |
-| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) |
-| Matrix View | ❌ | ✅ | ✅ |
-| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics |
-| BloodHound Export | ✅ | ❌ | ❌ |
-| HTML Report | ✅ | ❌ | ❌ |
-| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields |
-| Stealth Mode | ✅ | ✅ | ✅ |
-| **Best For** | Red team reconnaissance | MFA compliance audits | External user security |
+| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check |
+|---------|---------------------|-------------------|---------------------------|----------------------------|
+| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit |
+| User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based |
+| MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types |
+| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) |
+| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic | ❌ |
+| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates | ❌ |
+| App Access Tracking | ❌ | ❌ | ❌ | ✅ Multi-app coverage |
+| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates |
+| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics |
+| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ |
+| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) |
+| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) |
+| Matrix View | ❌ | ✅ | ✅ | ✅ |
+| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics |
+| BloodHound Export | ✅ | ❌ | ❌ | ❌ |
+| HTML Report | ✅ | ❌ | ❌ | ❌ |
+| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
+| Stealth Mode | ✅ | ✅ | ✅ | ✅ |
+| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit |
 
 ---
 
