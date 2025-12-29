@@ -194,6 +194,50 @@ python entra_recon.py
 
 📖 **Full documentation:** [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md)
 
+### Privileged Role Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Check users with privileged directory roles
+.\Invoke-EntraRoleCheck.ps1
+
+# Export results to CSV
+.\Invoke-EntraRoleCheck.ps1 -ExportPath "privileged-roles.csv"
+
+# Show only users without MFA in matrix view
+.\Invoke-EntraRoleCheck.ps1 -Matrix -OnlyNoMFA
+
+# Show only permanent (non-PIM) assignments
+.\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -ExportPath "permanent-admins.csv"
+
+# Stealth mode scan
+.\Invoke-EntraRoleCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md)
+
+### Privileged Role Check (PowerShell)
+
+Comprehensive security assessment tool to identify and analyze Azure Entra ID users with privileged directory roles including Global Administrators, Privileged Role Administrators, and other high-privilege roles. Essential for privileged access governance and role assignment auditing.
+
+**Key Features:**
+- **Comprehensive Role Coverage** - Enumerates all directory roles including CRITICAL, HIGH, MEDIUM, and LOW risk roles
+- **PIM Support** - Identifies both permanent (Active) and PIM-managed (Eligible/Active) role assignments
+- **Assignment Tracking** - Shows assignment dates, duration, and expiration dates
+- **MFA Status Detection** - Identify privileged users without Multi-Factor Authentication
+- **Last Sign-In Tracking** - Shows login date/time and activity patterns
+- **Risk Assessment** - Categorizes users by risk level based on role criticality and security posture
+- **Activity Analytics** - Sign-in statistics, stale accounts, inactive users
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only users without MFA, only permanent assignments, or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive role assignment details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md) | `Invoke-EntraRoleCheck.ps1` |
+
 ---
 
 ## Documentation
@@ -205,6 +249,7 @@ python entra_recon.py
 | [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md) | MFA Security Check documentation including shared mailbox detection, sign-in tracking, and risk assessment |
 | [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md) | Guest Account Enumeration documentation including guest domain extraction, invite tracking, and security analysis |
 | [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md) | PowerShell & Graph CLI Access Check documentation including app access tracking, assignment dates, and privileged access analysis |
+| [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md) | Privileged Role Check documentation including role enumeration, PIM assignment tracking, risk assessment, and security analysis |
 
 ---
 
@@ -236,27 +281,29 @@ Both versions provide the same core functionality:
 
 ### Toolkit Comparison
 
-| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check |
-|---------|---------------------|-------------------|---------------------------|----------------------------|
-| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit |
-| User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based |
-| MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types |
-| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) |
-| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic | ❌ |
-| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates | ❌ |
-| App Access Tracking | ❌ | ❌ | ❌ | ✅ Multi-app coverage |
-| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates |
-| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics |
-| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ |
-| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) |
-| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) |
-| Matrix View | ❌ | ✅ | ✅ | ✅ |
-| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics |
-| BloodHound Export | ✅ | ❌ | ❌ | ❌ |
-| HTML Report | ✅ | ❌ | ❌ | ❌ |
-| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
-| Stealth Mode | ✅ | ✅ | ✅ | ✅ |
-| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit |
+| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check |
+|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|
+| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit |
+| User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based | Role assignment-based |
+| MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types | Advanced with method types |
+| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) | ❌ (N/A for roles) |
+| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic | ❌ | ❌ |
+| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates | ❌ | ❌ |
+| App Access Tracking | ❌ | ❌ | ❌ | ✅ Multi-app coverage | ❌ |
+| Role Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ All directory roles |
+| PIM Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ Eligible & Active |
+| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates | ✅ Assignment dates & duration |
+| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics |
+| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ | ❌ |
+| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
+| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) |
+| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics |
+| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ |
+| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ |
+| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
+| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance |
 
 ---
 
@@ -281,7 +328,7 @@ pip install azure-identity
 
 **Enumerate-EntraUsers:** The script will automatically install the required `Microsoft.Graph.Users` module on first run.
 
-**MFA Security Check:** Requires Microsoft Graph PowerShell SDK:
+**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, and Privileged Role Check:** Require Microsoft Graph PowerShell SDK:
 
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
@@ -293,6 +340,8 @@ Or install individual modules:
 Install-Module Microsoft.Graph.Authentication -Scope CurrentUser
 Install-Module Microsoft.Graph.Users -Scope CurrentUser
 Install-Module Microsoft.Graph.Identity.SignIns -Scope CurrentUser
+Install-Module Microsoft.Graph.Identity.DirectoryManagement -Scope CurrentUser
+Install-Module Microsoft.Graph.Applications -Scope CurrentUser
 ```
 
 ---
