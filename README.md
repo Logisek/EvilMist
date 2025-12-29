@@ -255,7 +255,50 @@ python entra_recon.py
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md) | `Invoke-EntraRoleCheck.ps1` |
+| PowerShell | [EntraServicePrincipalCheck-PS1.md](EntraServicePrincipalCheck-PS1.md) | `Invoke-EntraServicePrincipalCheck.ps1` |
+
+---
+
+### Conditional Access Policy Security Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all Conditional Access policies
+.\Invoke-EntraConditionalAccessCheck.ps1
+
+# Export results to CSV
+.\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-policies.csv"
+
+# Show only policies with exclusions in matrix view
+.\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -OnlyWithExclusions
+
+# Show only policies without MFA enforcement
+.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -ExportPath "mfa-gaps.csv"
+
+# Stealth mode scan
+.\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraConditionalAccessCheck-PS1.md](EntraConditionalAccessCheck-PS1.md)
+
+**Key Features:**
+- **Comprehensive Policy Analysis** - Enumerates all Conditional Access policies and analyzes configurations
+- **Exclusion Detection** - Identifies users, groups, roles, and applications excluded from policies
+- **MFA Enforcement Gaps** - Detects policies without MFA requirements
+- **Critical App Coverage** - Checks if critical applications are protected by policies
+- **Legacy Auth Detection** - Identifies policies targeting legacy authentication methods
+- **Risk Assessment** - Categorizes policies by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on gaps and exclusions
+- **Conflict Detection** - Identifies redundant or conflicting policies
+- **Coverage Gap Analysis** - Highlights areas without policy protection
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only policies with exclusions, MFA gaps, or include disabled policies
+- **Export Options** - CSV/JSON with comprehensive policy details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraConditionalAccessCheck-PS1.md](EntraConditionalAccessCheck-PS1.md) | `Invoke-EntraConditionalAccessCheck.ps1` |
 
 ---
 
@@ -270,6 +313,7 @@ python entra_recon.py
 | [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md) | PowerShell & Graph CLI Access Check documentation including app access tracking, assignment dates, and privileged access analysis |
 | [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md) | Privileged Role Check documentation including role enumeration, PIM assignment tracking, risk assessment, and security analysis |
 | [EntraServicePrincipalCheck-PS1.md](EntraServicePrincipalCheck-PS1.md) | Service Principal Security Check documentation including credential enumeration, expiration tracking, permission analysis, owner security, and risk assessment |
+| [EntraConditionalAccessCheck-PS1.md](EntraConditionalAccessCheck-PS1.md) | Conditional Access Policy Security Check documentation including policy enumeration, exclusion detection, MFA enforcement gaps, critical app coverage, and risk assessment |
 
 ---
 
@@ -301,9 +345,9 @@ Both versions provide the same core functionality:
 
 ### Toolkit Comparison
 
-| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check | Service Principal Check |
-|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|------------------------|
-| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit | Service account security audit |
+| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check | Service Principal Check | Conditional Access Check |
+|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|------------------------|--------------------------|
+| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit | Service account security audit | Security policy gap analysis |
 | User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based | Role assignment-based | Service principal-focused |
 | MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types | Advanced with method types | Owner MFA check |
 | Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) | ❌ (N/A for roles) | ❌ (N/A for SPs) |
@@ -315,19 +359,24 @@ Both versions provide the same core functionality:
 | Credential Enumeration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Secrets & certificates |
 | Credential Expiration Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Expired & expiring soon |
 | Permission Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ High-risk & critical |
-| Owner Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ With MFA status |
-| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates | ✅ Assignment dates & duration | ❌ |
-| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | Limited (SP activity) |
-| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ |
-| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
-| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Basic (age-based) |
-| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ |
-| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
-| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance | Service account security |
+| Owner Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ With MFA status | ❌ |
+| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates | ✅ Assignment dates & duration | ❌ | ❌ |
+| Policy Exclusion Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Users, groups, roles, apps |
+| MFA Enforcement Gaps | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy-level analysis |
+| Critical App Coverage | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ 10 critical apps |
+| Legacy Auth Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy targeting |
+| Policy Conflict Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Redundant/conflicting |
+| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | Limited (SP activity) | ❌ |
+| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
+| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Basic (age-based) | Policy gap analysis |
+| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ | ❌ |
+| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
+| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance | Service account security | Security policy gap analysis |
 
 ---
 
@@ -352,7 +401,7 @@ pip install azure-identity
 
 **Enumerate-EntraUsers:** The script will automatically install the required `Microsoft.Graph.Users` module on first run.
 
-**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, Privileged Role Check, and Service Principal Check:** Require Microsoft Graph PowerShell SDK:
+**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, Privileged Role Check, Service Principal Check, and Conditional Access Check:** Require Microsoft Graph PowerShell SDK:
 
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
