@@ -500,6 +500,8 @@ function Get-SyncConfiguration {
 function Start-SyncScan {
     Write-Host "`n[*] Starting directory sync scan..." -ForegroundColor Cyan
     Write-Host "[*] This may take a while depending on the number of users..." -ForegroundColor Cyan
+    Write-Host "[!] Note: Azure AD Connect often doesn't populate per-user sync timestamps." -ForegroundColor Yellow
+    Write-Host "    When available, we'll use error timestamps as a proxy indicator." -ForegroundColor Yellow
     
     # Get sync configuration
     $script:SyncConfiguration = Get-SyncConfiguration
@@ -562,27 +564,40 @@ function Start-SyncScan {
             }
             
             # Calculate days since last sync
+            # Note: onPremisesLastSyncDateTime is often null due to Azure AD Connect limitations
+            # We'll use error timestamps as a proxy when available
             $daysSinceLastSync = $null
             $lastSyncDate = $null
+            $syncDateSource = "Direct"  # "Direct", "ErrorProxy", or null
+            
             if ($user.onPremisesLastSyncDateTime) {
                 try {
-                    $lastSyncDate = [DateTime]$user.onPremisesLastSyncDateTime
+                    # Handle both DateTime objects and string formats
+                    if ($user.onPremisesLastSyncDateTime -is [DateTime]) {
+                        $lastSyncDate = $user.onPremisesLastSyncDateTime
+                    }
+                    else {
+                        $lastSyncDate = [DateTime]::Parse($user.onPremisesLastSyncDateTime.ToString())
+                    }
                     $daysSinceLastSync = ([DateTime]::Now - $lastSyncDate).Days
+                    $syncDateSource = "Direct"
                 }
-                catch { }
+                catch {
+                    # Try alternative parsing methods
+                    try {
+                        $lastSyncDate = [DateTime]::ParseExact($user.onPremisesLastSyncDateTime.ToString(), "yyyy-MM-ddTHH:mm:ssZ", $null)
+                        $daysSinceLastSync = ([DateTime]::Now - $lastSyncDate).Days
+                        $syncDateSource = "Direct"
+                    }
+                    catch { }
+                }
             }
             
-            # Skip if OnlyStaleSync is set and sync is not stale
-            if ($OnlyStaleSync) {
-                if (-not $isSynced -or $null -eq $daysSinceLastSync -or $daysSinceLastSync -le 7) {
-                    continue
-                }
-            }
-            
-            # Parse provisioning errors
+            # Parse provisioning errors (needed for error timestamp proxy)
             $errorCategories = @()
             $errorDetails = @()
             $errorCount = 0
+            $mostRecentErrorDate = $null
             
             if ($hasErrors) {
                 $errorCount = $provErrors.Count
@@ -591,6 +606,22 @@ function Start-SyncScan {
                     if ($category -notin $errorCategories) {
                         $errorCategories += $category
                     }
+                    
+                    # Track most recent error date for proxy use
+                    if ($syncErr.occurredDateTime) {
+                        try {
+                            $errorDate = if ($syncErr.occurredDateTime -is [DateTime]) {
+                                $syncErr.occurredDateTime
+                            } else {
+                                [DateTime]::Parse($syncErr.occurredDateTime.ToString())
+                            }
+                            if ($null -eq $mostRecentErrorDate -or $errorDate -gt $mostRecentErrorDate) {
+                                $mostRecentErrorDate = $errorDate
+                            }
+                        }
+                        catch { }
+                    }
+                    
                     $errorDetails += [PSCustomObject]@{
                         Category = $category
                         Property = $syncErr.propertyCausingError
@@ -598,6 +629,20 @@ function Start-SyncScan {
                         OccurredDateTime = $syncErr.occurredDateTime
                         ErrorCode = $syncErr.errorCode
                     }
+                }
+            }
+            
+            # Fallback: Use error timestamp as proxy for sync date if direct sync date is unavailable
+            if ($null -eq $lastSyncDate -and $null -ne $mostRecentErrorDate -and $isSynced) {
+                $lastSyncDate = $mostRecentErrorDate
+                $daysSinceLastSync = ([DateTime]::Now - $lastSyncDate).Days
+                $syncDateSource = "ErrorProxy"
+            }
+            
+            # Skip if OnlyStaleSync is set and sync is not stale
+            if ($OnlyStaleSync) {
+                if (-not $isSynced -or $null -eq $daysSinceLastSync -or $daysSinceLastSync -le 7) {
+                    continue
                 }
             }
             
@@ -623,6 +668,70 @@ function Start-SyncScan {
             # Determine sync source
             $syncSource = if ($isSynced) { "On-Premises AD" } else { "Cloud-Only" }
             
+            # Extract domain name with fallback logic
+            $domainName = $null
+            if ($user.onPremisesDomainName) {
+                $domainName = $user.onPremisesDomainName.ToString().Trim()
+            }
+            
+            # If domain is empty and user is synced, try fallback methods
+            if ([string]::IsNullOrWhiteSpace($domainName) -and $isSynced) {
+                # Try to extract from Distinguished Name (DN format: CN=User,OU=...,DC=domain,DC=com)
+                if ($user.onPremisesDistinguishedName) {
+                    $dn = $user.onPremisesDistinguishedName.ToString()
+                    $dcMatches = [regex]::Matches($dn, 'DC=([^,]+)')
+                    if ($dcMatches.Count -gt 0) {
+                        $domainName = ($dcMatches | ForEach-Object { $_.Groups[1].Value }) -join '.'
+                    }
+                }
+                
+                # Fallback: Extract from UserPrincipalName if still empty
+                if ([string]::IsNullOrWhiteSpace($domainName) -and $user.userPrincipalName) {
+                    $upnStr = $user.userPrincipalName.ToString()
+                    if ($upnStr.Contains('@')) {
+                        $upnParts = $upnStr.Split('@')
+                        if ($upnParts.Count -eq 2) {
+                            $domainName = $upnParts[1]
+                        }
+                    }
+                }
+                
+                # Final fallback: Extract from mail field if still empty
+                if ([string]::IsNullOrWhiteSpace($domainName) -and $user.mail) {
+                    $mailStr = $user.mail.ToString()
+                    if ($mailStr.Contains('@')) {
+                        $mailParts = $mailStr.Split('@')
+                        if ($mailParts.Count -eq 2) {
+                            $domainName = $mailParts[1]
+                        }
+                    }
+                }
+            }
+            
+            # For cloud-only users, extract domain from UPN or mail if available
+            if ([string]::IsNullOrWhiteSpace($domainName) -and -not $isSynced) {
+                if ($user.userPrincipalName) {
+                    $upnStr = $user.userPrincipalName.ToString()
+                    if ($upnStr.Contains('@')) {
+                        $upnParts = $upnStr.Split('@')
+                        if ($upnParts.Count -eq 2) {
+                            $domainName = $upnParts[1]
+                        }
+                    }
+                }
+                
+                # Fallback to mail field
+                if ([string]::IsNullOrWhiteSpace($domainName) -and $user.mail) {
+                    $mailStr = $user.mail.ToString()
+                    if ($mailStr.Contains('@')) {
+                        $mailParts = $mailStr.Split('@')
+                        if ($mailParts.Count -eq 2) {
+                            $domainName = $mailParts[1]
+                        }
+                    }
+                }
+            }
+            
             $userInfo = [PSCustomObject]@{
                 DisplayName = $user.displayName
                 UserPrincipalName = $user.userPrincipalName
@@ -631,11 +740,12 @@ function Start-SyncScan {
                 UserType = $user.userType
                 SyncSource = $syncSource
                 OnPremisesSyncEnabled = $isSynced
-                OnPremisesDomainName = $user.onPremisesDomainName
+                OnPremisesDomainName = $domainName
                 OnPremisesSamAccountName = $user.onPremisesSamAccountName
                 OnPremisesDistinguishedName = $user.onPremisesDistinguishedName
                 OnPremisesLastSyncDateTime = $lastSyncDate
                 DaysSinceLastSync = $daysSinceLastSync
+                SyncDateSource = $syncDateSource  # "Direct", "ErrorProxy", or null
                 OnPremisesImmutableId = $user.onPremisesImmutableId
                 OnPremisesSecurityIdentifier = $user.onPremisesSecurityIdentifier
                 HasSyncErrors = $hasErrors
@@ -684,12 +794,21 @@ function Show-MatrixResults {
         @{Name='Status';Expression={if($_.AccountEnabled){'Enabled'}else{'Disabled'}}},
         @{Name='User Principal Name';Expression={$_.UserPrincipalName}},
         @{Name='Display Name';Expression={$_.DisplayName}},
-        @{Name='Domain';Expression={if($_.OnPremisesDomainName){$_.OnPremisesDomainName}else{'-'}}},
+        @{Name='Domain';Expression={
+            if($null -ne $_.OnPremisesDomainName -and $_.OnPremisesDomainName.ToString().Trim() -ne ''){$_.OnPremisesDomainName}else{'-'}
+        }},
         @{Name='Last Sync';Expression={
             if($null -eq $_.DaysSinceLastSync){'-'}
-            elseif($_.DaysSinceLastSync -eq 0){'Today'}
-            elseif($_.DaysSinceLastSync -eq 1){'Yesterday'}
-            else{"$($_.DaysSinceLastSync)d ago"}
+            elseif($_.DaysSinceLastSync -eq 0){
+                if($_.SyncDateSource -eq 'ErrorProxy'){'Today*'}else{'Today'}
+            }
+            elseif($_.DaysSinceLastSync -eq 1){
+                if($_.SyncDateSource -eq 'ErrorProxy'){'Yesterday*'}else{'Yesterday'}
+            }
+            else{
+                $dateStr = "$($_.DaysSinceLastSync)d ago"
+                if($_.SyncDateSource -eq 'ErrorProxy'){"$dateStr*"}else{$dateStr}
+            }
         }},
         @{Name='Errors';Expression={if($_.HasSyncErrors){"$($_.ErrorCount)"}else{'0'}}},
         @{Name='Error Categories';Expression={if($_.ErrorCategories){$_.ErrorCategories}else{'-'}}}
@@ -720,6 +839,22 @@ function Show-MatrixResults {
     }
     
     Write-Host ("=" * 180) -ForegroundColor Cyan
+    
+    # Note about sync date limitations
+    $usersWithProxyDates = ($script:SyncStatusData | Where-Object { $_.SyncDateSource -eq 'ErrorProxy' }).Count
+    if ($usersWithProxyDates -gt 0) {
+        Write-Host "`n[NOTE]" -ForegroundColor Yellow
+        Write-Host "* Last Sync dates marked with '*' are estimated from error timestamps" -ForegroundColor Yellow
+        Write-Host "  Azure AD Connect often doesn't populate onPremisesLastSyncDateTime per user." -ForegroundColor Yellow
+        Write-Host "  When direct sync dates are unavailable, we use the most recent error timestamp" -ForegroundColor Yellow
+        Write-Host "  as a proxy indicator of sync activity. This is a known Microsoft limitation." -ForegroundColor Yellow
+    }
+    elseif (($script:SyncStatusData | Where-Object { $null -eq $_.DaysSinceLastSync -and $_.OnPremisesSyncEnabled -eq $true }).Count -gt 0) {
+        Write-Host "`n[NOTE]" -ForegroundColor Yellow
+        Write-Host "Many synced users show '-' for Last Sync date. This is expected behavior." -ForegroundColor Yellow
+        Write-Host "Azure AD Connect does not populate onPremisesLastSyncDateTime for most users." -ForegroundColor Yellow
+        Write-Host "This is a known Microsoft limitation - sync status is determined by other indicators." -ForegroundColor Yellow
+    }
     
     # Summary statistics
     Write-Host "`n[SUMMARY]" -ForegroundColor Cyan
@@ -854,13 +989,28 @@ function Show-Results {
             
             if ($_.OnPremisesLastSyncDateTime) {
                 Write-Host "  Last Sync: " -NoNewline -ForegroundColor Gray
-                Write-Host "$($_.OnPremisesLastSyncDateTime.ToString('yyyy-MM-dd HH:mm:ss'))" -NoNewline -ForegroundColor $(if($_.DaysSinceLastSync -gt 7){"Yellow"}elseif($_.DaysSinceLastSync -gt 30){"Red"}else{"Green"})
+                $dateColor = if($_.DaysSinceLastSync -gt 30){"Red"}elseif($_.DaysSinceLastSync -gt 7){"Yellow"}else{"Green"}
+                Write-Host "$($_.OnPremisesLastSyncDateTime.ToString('yyyy-MM-dd HH:mm:ss'))" -NoNewline -ForegroundColor $dateColor
                 if ($null -ne $_.DaysSinceLastSync) {
-                    Write-Host " ($($_.DaysSinceLastSync) days ago)" -ForegroundColor DarkGray
+                    Write-Host " ($($_.DaysSinceLastSync) days ago)" -NoNewline -ForegroundColor DarkGray
+                }
+                if ($_.SyncDateSource -eq 'ErrorProxy') {
+                    Write-Host " [Estimated from error timestamp]" -ForegroundColor Yellow
+                }
+                else {
+                    Write-Host ""
                 }
             }
+            elseif ($_.OnPremisesSyncEnabled -eq $true) {
+                Write-Host "  Last Sync: " -NoNewline -ForegroundColor Gray
+                Write-Host "Not available (Azure AD Connect limitation)" -ForegroundColor Yellow
+            }
+            elseif ($_.OnPremisesSyncEnabled -eq $true) {
+                Write-Host "  Last Sync: " -NoNewline -ForegroundColor Gray
+                Write-Host "Not available (Azure AD Connect limitation)" -ForegroundColor Yellow
+            }
             else {
-                Write-Host "  Last Sync: Never" -ForegroundColor DarkGray
+                Write-Host "  Last Sync: N/A (Cloud-only user)" -ForegroundColor DarkGray
             }
             
             if ($_.HasSyncErrors) {
