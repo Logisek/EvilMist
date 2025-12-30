@@ -25,6 +25,8 @@
     - EntraLegacyAuthCheck
     - EntraLicenseCheck
     - EntraDirectorySyncCheck
+    - EntraPowerPlatformCheck
+    - EntraAttackPathCheck
 
 .PARAMETER List
     List all available scripts and exit.
@@ -64,6 +66,10 @@ $AvailableScripts = @{
     'EntraLegacyAuthCheck' = 'Invoke-EntraLegacyAuthCheck.ps1'
     'EntraLicenseCheck' = 'Invoke-EntraLicenseCheck.ps1'
     'EntraDirectorySyncCheck' = 'Invoke-EntraDirectorySyncCheck.ps1'
+    'EntraPowerPlatformCheck' = 'Invoke-EntraPowerPlatformCheck.ps1'
+    'EntraGroupCheck' = 'Invoke-EntraGroupCheck.ps1'
+    'EntraApplicationCheck' = 'Invoke-EntraApplicationCheck.ps1'
+    'EntraAttackPathCheck' = 'Invoke-EntraAttackPathCheck.ps1'
 }
 
 # Script descriptions for display
@@ -83,6 +89,10 @@ $ScriptDescriptions = @{
     'EntraLegacyAuthCheck' = 'Legacy authentication usage check'
     'EntraLicenseCheck' = 'License and SKU analysis'
     'EntraDirectorySyncCheck' = 'Directory sync status and health check'
+    'EntraPowerPlatformCheck' = 'Power Platform enumeration and security audit'
+    'EntraGroupCheck' = 'Group security analysis and governance'
+    'EntraApplicationCheck' = 'Application registration security check'
+    'EntraAttackPathCheck' = 'Attack path analysis - privilege escalation and lateral movement'
 }
 
 function Show-AvailableScripts {

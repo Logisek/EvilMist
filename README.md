@@ -118,7 +118,7 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 .\Invoke-EvilMist.ps1 -Script EntraMFACheck -Matrix -OnlyNoMFA
 ```
 
-**Available scripts:** EntraRecon, EntraMFACheck, EntraGuestCheck, EntraAppAccess, EntraRoleCheck, EntraServicePrincipalCheck, EntraConditionalAccessCheck, EntraAdminUnitCheck, EntraStaleAccountCheck, EntraDeviceCheck, EntraSSPRCheck, EntraPasswordPolicyCheck, EntraLegacyAuthCheck, EntraLicenseCheck, EntraDirectorySyncCheck
+**Available scripts:** EntraRecon, EntraMFACheck, EntraGuestCheck, EntraAppAccess, EntraRoleCheck, EntraServicePrincipalCheck, EntraConditionalAccessCheck, EntraAdminUnitCheck, EntraStaleAccountCheck, EntraDeviceCheck, EntraSSPRCheck, EntraPasswordPolicyCheck, EntraLegacyAuthCheck, EntraLicenseCheck, EntraDirectorySyncCheck, EntraPowerPlatformCheck, EntraGroupCheck, EntraApplicationCheck, EntraAttackPathCheck
 
 ### Enumerate-EntraUsers (PowerShell)
 
@@ -279,6 +279,50 @@ python scripts\python\entra_recon.py
 | Version | Documentation | File |
 |---------|---------------|------|
 | PowerShell | [EntraServicePrincipalCheck-PS1.md](docs/EntraServicePrincipalCheck-PS1.md) | `scripts/powershell/Invoke-EntraServicePrincipalCheck.ps1` |
+
+---
+
+### Application Registration Security Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Check all application registrations and analyze security posture
+.\Invoke-EvilMist.ps1 -Script EntraApplicationCheck
+
+# Export results to CSV
+.\Invoke-EvilMist.ps1 -Script EntraApplicationCheck -ExportPath "applications.csv"
+
+# Show only applications with expired credentials in matrix view
+.\Invoke-EvilMist.ps1 -Script EntraApplicationCheck -Matrix -OnlyExpiredCredentials
+
+# Show only high-permission applications
+.\Invoke-EvilMist.ps1 -Script EntraApplicationCheck -OnlyHighPermission -ExportPath "high-perm-apps.csv"
+
+# Show only applications with credentials
+.\Invoke-EvilMist.ps1 -Script EntraApplicationCheck -OnlyWithCredentials -ExportPath "apps-with-creds.csv"
+
+# Stealth mode scan
+.\Invoke-EvilMist.ps1 -Script EntraApplicationCheck -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraApplicationCheck-PS1.md](docs/EntraApplicationCheck-PS1.md)
+
+**Key Features:**
+- **Comprehensive Application Enumeration** - Enumerates all application registrations in the tenant
+- **Credential Analysis** - Identifies applications with secrets and certificates
+- **Expiration Tracking** - Detects expired and expiring credentials (≤30 days)
+- **API Permission Analysis** - Identifies applications with high-risk and critical permissions
+- **Owner Security Assessment** - Checks app owners and their MFA status
+- **Risk Assessment** - Categorizes applications by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on permissions and credentials
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only apps with credentials, expired credentials, or high permissions
+- **Export Options** - CSV/JSON with comprehensive application details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraApplicationCheck-PS1.md](docs/EntraApplicationCheck-PS1.md) | `scripts/powershell/Invoke-EntraApplicationCheck.ps1` |
 
 ---
 
@@ -643,6 +687,104 @@ python scripts\python\entra_recon.py
 
 ---
 
+### Power Platform Enumeration (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules, Power Platform Admin or Environment Maker permissions
+
+**Authentication:** The script automatically handles Power Platform API authentication:
+- **Default**: Device code flow (browser prompt) - no setup needed
+- **Azure CLI**: Use `-UseAzCliToken` - automatically runs `az login` if needed
+- **Azure PowerShell**: Use `-UseAzPowerShellToken` - automatically runs `Connect-AzAccount` if needed (uses same account as Graph auth)
+
+```powershell
+# Enumerate all Power Apps and Power Automate flows
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck
+
+# Export results to CSV
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck -ExportPath "power-platform.csv"
+
+# Show only high-risk resources (CRITICAL/HIGH) in matrix view
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck -Matrix -OnlyHighRisk
+
+# Show only resources with sensitive connectors
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck -OnlySensitiveConnectors -ExportPath "sensitive.csv"
+
+# Use Azure CLI (automatically runs 'az login' if needed)
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck -UseAzCliToken
+
+# Use Azure PowerShell (automatically runs 'Connect-AzAccount' if needed, uses Graph context account)
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck -UseAzPowerShellToken
+
+# Stealth mode scan
+.\Invoke-EvilMist.ps1 -Script EntraPowerPlatformCheck -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraPowerPlatformCheck-PS1.md](docs/EntraPowerPlatformCheck-PS1.md)
+
+**Key Features:**
+- **Power Apps Enumeration** - Enumerates all Power Apps with owner and sharing information
+- **Power Automate Flow Enumeration** - Enumerates all flows with connector and action analysis
+- **Sensitive Connector Detection** - Identifies 30+ sensitive connectors (CRITICAL, HIGH, MEDIUM, LOW risk)
+- **High-Risk Action Detection** - Identifies flows with high-risk actions (Delete, Create, Modify, etc.)
+- **Risk Assessment** - Categorizes resources by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on connector types and actions
+- **Connector Analysis** - Analyzes connector usage and categorizes by risk level
+- **Automatic Authentication** - Automatically handles Power Platform API authentication (device code flow, Azure CLI, or Azure PowerShell)
+- **Activity Analytics** - Resource statistics, environment breakdowns, owner analysis
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only high-risk resources or resources with sensitive connectors
+- **Export Options** - CSV/JSON with comprehensive resource details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraPowerPlatformCheck-PS1.md](docs/EntraPowerPlatformCheck-PS1.md) | `scripts/powershell/Invoke-EntraPowerPlatformCheck.ps1` |
+
+---
+
+### Attack Path Analysis (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all attack paths (privilege escalation, password reset, transitive groups, shared mailboxes)
+.\Invoke-EvilMist.ps1 -Script EntraAttackPathCheck
+
+# Export results to CSV
+.\Invoke-EvilMist.ps1 -Script EntraAttackPathCheck -ExportPath "attack-paths.csv"
+
+# Show only high-risk paths (CRITICAL/HIGH) in matrix view
+.\Invoke-EvilMist.ps1 -Script EntraAttackPathCheck -Matrix -OnlyHighRisk
+
+# Include disabled accounts
+.\Invoke-EvilMist.ps1 -Script EntraAttackPathCheck -IncludeDisabledUsers -ExportPath "all-paths.csv"
+
+# Stealth mode scan
+.\Invoke-EvilMist.ps1 -Script EntraAttackPathCheck -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraAttackPathCheck-PS1.md](docs/EntraAttackPathCheck-PS1.md)
+
+**Key Features:**
+- **Privilege Escalation Analysis** - Identifies paths to elevated privileges through role-assignable groups
+- **Password Reset Delegation Detection** - Finds users who can reset passwords for other users
+- **Transitive Group Membership Analysis** - Identifies indirect access to privileged groups
+- **Shared Mailbox Access Detection** - Identifies shared mailboxes that could be used for lateral movement
+- **Risk Assessment** - Categorizes attack paths by risk level (CRITICAL/HIGH/MEDIUM) based on path type and user security posture
+- **Path Complexity Analysis** - Evaluates attack path complexity (Low/Medium/High)
+- **MFA Status Detection** - Identify users without Multi-Factor Authentication in attack paths
+- **Last Sign-In Tracking** - Shows login date/time and activity patterns
+- **Activity Analytics** - Sign-in statistics, stale accounts, inactive users
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only high-risk paths or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive attack path details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraAttackPathCheck-PS1.md](docs/EntraAttackPathCheck-PS1.md) | `scripts/powershell/Invoke-EntraAttackPathCheck.ps1` |
+
+---
+
 ## Documentation
 
 | Document | Description |
@@ -663,6 +805,10 @@ python scripts\python\entra_recon.py
 | [EntraLicenseCheck-PS1.md](docs/EntraLicenseCheck-PS1.md) | License and SKU Analysis documentation including tenant SKU enumeration, user license assignment tracking, privileged license detection, unused license identification, and risk assessment |
 | [EntraAdminUnitCheck-PS1.md](docs/EntraAdminUnitCheck-PS1.md) | Administrative Unit Security Check documentation including AU enumeration, scoped role assignment analysis, member enumeration, MFA status detection, risk assessment, and scoped admin access analysis |
 | [EntraDirectorySyncCheck-PS1.md](docs/EntraDirectorySyncCheck-PS1.md) | Directory Sync Status Check documentation including sync status analysis, sync error detection, stale sync detection, sync conflict identification, sync scope analysis, and risk assessment |
+| [EntraPowerPlatformCheck-PS1.md](docs/EntraPowerPlatformCheck-PS1.md) | Power Platform Enumeration documentation including Power Apps enumeration, Power Automate flow enumeration, sensitive connector detection, high-risk action identification, connector analysis, and risk assessment |
+| [EntraGroupCheck-PS1.md](docs/EntraGroupCheck-PS1.md) | Group Security Analysis documentation including group enumeration, owner analysis with MFA status, no owner detection, excessive membership detection, role-assignable group detection, and risk assessment |
+| [EntraApplicationCheck-PS1.md](docs/EntraApplicationCheck-PS1.md) | Application Registration Security Check documentation including application enumeration, credential analysis, expiration tracking, API permission analysis, owner security assessment, and risk assessment |
+| [EntraAttackPathCheck-PS1.md](docs/EntraAttackPathCheck-PS1.md) | Attack Path Analysis documentation including privilege escalation paths, password reset delegations, transitive group memberships, shared mailbox access, risk assessment, and path complexity analysis |
 
 ---
 
@@ -694,9 +840,9 @@ Both versions provide the same core functionality:
 
 ### Toolkit Comparison
 
-| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check | Service Principal Check | Conditional Access Check | Administrative Unit Check | Stale Account Check | Device Trust Check | SSPR Check | Password Policy Check | Legacy Auth Check | License Check | Directory Sync Check |
-|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|------------------------|--------------------------|------------------------|---------------------|-------------------|-------------|---------------------|-------------------|--------------|---------------------|
-| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit | Service account security audit | Security policy gap analysis | Scoped admin access audit | Account hygiene audit | Device trust and compliance audit | SSPR configuration audit | Password policy security audit | Legacy authentication security audit | License and SKU analysis | Directory sync status and health audit |
+| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check | Service Principal Check | Application Registration Check | Conditional Access Check | Administrative Unit Check | Stale Account Check | Device Trust Check | SSPR Check | Password Policy Check | Legacy Auth Check | License Check | Directory Sync Check | Power Platform Check | Group Security Check | Attack Path Analysis |
+|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|------------------------|--------------------------|--------------------------|------------------------|---------------------|-------------------|-------------|---------------------|-------------------|--------------|---------------------|-------------------|-------------------|-------------------|-------------------|
+| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit | Service account security audit | Application registration security audit | Security policy gap analysis | Scoped admin access audit | Account hygiene audit | Device trust and compliance audit | SSPR configuration audit | Password policy security audit | Legacy authentication security audit | License and SKU analysis | Directory sync status and health audit | Power Platform enumeration and security audit | Group security analysis and governance | Attack path analysis - privilege escalation and lateral movement |
 | User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based | Role assignment-based | Service principal-focused | | | | | | Legacy auth-focused | Sync-focused |
 | MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types | Advanced with method types | Owner MFA check | | | | | | Advanced with method types | ❌ |
 | Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) | ❌ (N/A for roles) | ❌ (N/A for SPs) | | | | | | ❌ (N/A for legacy auth) | ❌ |
@@ -705,10 +851,12 @@ Both versions provide the same core functionality:
 | App Access Tracking | ❌ | ❌ | ❌ | ✅ Multi-app coverage | ❌ | ❌ | | | | | | ❌ | ❌ |
 | Role Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ All directory roles | ❌ | | | | | | ❌ | ❌ |
 | PIM Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ Eligible & Active | ❌ | | | | | | ❌ | ❌ |
-| Credential Enumeration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Secrets & certificates | | | | | | ❌ | ❌ |
-| Credential Expiration Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Expired & expiring soon | | | | | | ❌ | ❌ |
-| Permission Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ High-risk & critical | | | | | | ❌ | ❌ |
-| Owner Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ With MFA status | ❌ | | | | | ❌ | ❌ |
+| Credential Enumeration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Secrets & certificates | ✅ Secrets & certificates | | | | | | ❌ | ❌ |
+| Credential Expiration Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Expired & expiring soon | ✅ Expired & expiring soon | | | | | | ❌ | ❌ |
+| Permission Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ High-risk & critical | ✅ High-risk & critical (API permissions) | | | | | | ❌ | ❌ |
+| Owner Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ With MFA status | ✅ With MFA status | ❌ | | | | | ❌ | ❌ | ✅ Group owners with MFA status |
+| Application Registration Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Comprehensive | | | | | | ❌ | ❌ |
+| API Permission Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Delegated & application | | | | | | ❌ | ❌ |
 | Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates | ✅ Assignment dates & duration | ❌ | ❌ | | | | | ❌ | ❌ |
 | Policy Exclusion Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Users, groups, roles, apps | | | | | ❌ | ❌ |
 | MFA Enforcement Gaps | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy-level analysis | | | | | ❌ | ❌ |
@@ -747,16 +895,26 @@ Both versions provide the same core functionality:
 | License Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ All assignments | ❌ |
 | Privileged License Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ E5, P2, etc. | ❌ |
 | Unused License Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Disabled with licenses | ❌ | ❌ | ❌ | ❌ | ✅ Never signed in | ❌ |
-| License Usage Analytics | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Consumption stats | ❌ |
-| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
-| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Basic (age-based) | Policy gap analysis | Detailed (scoped admin activity) | Detailed (stale indicators) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (password age/policy gaps) | Detailed (usage recency/protocol stats) | Detailed (license usage/unused tracking) | Detailed (sync health/error stats) |
-| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ | ❌ | ✅ With statistics | ✅ With statistics | ❌ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics |
-| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
-| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance | Service account security | Security policy gap analysis | Scoped admin access governance | Account hygiene & cleanup | Device trust and compliance | Password reset security | Password policy compliance | Legacy auth migration & security | License governance & cost optimization | Directory sync health & error tracking |
+| License Usage Analytics | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Consumption stats | ❌ | ❌ |
+| Power Apps Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Comprehensive |
+| Power Automate Flow Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Comprehensive |
+| Sensitive Connector Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ 30+ connectors |
+| High-Risk Action Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Delete/Create/Modify |
+| Connector Risk Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ CRITICAL/HIGH/MEDIUM/LOW | ❌ |
+| Group Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Comprehensive (all types) |
+| No Owner Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Orphaned groups |
+| Excessive Membership Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ >100 or >500 members |
+| Role-Assignable Group Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ CRITICAL risk groups |
+| Group Type Analysis | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Security/M365/Distribution/Dynamic |
+| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
+| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Basic (age-based) | Detailed (credential expiration/permission analysis) | Policy gap analysis | Detailed (scoped admin activity) | Detailed (stale indicators) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (password age/policy gaps) | Detailed (usage recency/protocol stats) | Detailed (license usage/unused tracking) | Detailed (sync health/error stats) | Detailed (resource/environment/owner stats) | Detailed (group type/owner/membership stats) | Detailed (attack path type/complexity/risk stats) |
+| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ | ❌ | ✅ With statistics | ✅ With statistics | ❌ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ | ❌ |
+| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
+| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance | Service account security | Application registration security & credential management | Security policy gap analysis | Scoped admin access governance | Account hygiene & cleanup | Device trust and compliance | Password reset security | Password policy compliance | Legacy auth migration & security | License governance & cost optimization | Directory sync health & error tracking | Power Platform security & connector governance | Group security & governance | Attack path analysis & privilege escalation detection |
 
 ---
 
@@ -781,7 +939,7 @@ pip install azure-identity
 
 **Enumerate-EntraUsers:** The script will automatically install the required `Microsoft.Graph.Users` module on first run.
 
-**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, Privileged Role Check, Service Principal Check, Conditional Access Check, Administrative Unit Check, Stale Account Check, Device Trust Check, SSPR Check, Password Policy Check, Legacy Auth Check, License Check, and Directory Sync Check:** Require Microsoft Graph PowerShell SDK:
+**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, Privileged Role Check, Service Principal Check, Application Registration Check, Conditional Access Check, Administrative Unit Check, Stale Account Check, Device Trust Check, SSPR Check, Password Policy Check, Legacy Auth Check, License Check, Directory Sync Check, Power Platform Check, and Group Security Check:** Require Microsoft Graph PowerShell SDK:
 
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
@@ -795,6 +953,7 @@ Install-Module Microsoft.Graph.Users -Scope CurrentUser
 Install-Module Microsoft.Graph.Identity.SignIns -Scope CurrentUser
 Install-Module Microsoft.Graph.Identity.DirectoryManagement -Scope CurrentUser
 Install-Module Microsoft.Graph.Applications -Scope CurrentUser
+Install-Module Microsoft.Graph.Groups -Scope CurrentUser
 ```
 
 ---
