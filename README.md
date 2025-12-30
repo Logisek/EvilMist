@@ -100,22 +100,45 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 
 ## Quick Start
 
+### Script Dispatcher (PowerShell)
+
+**Execute any script from the root directory without navigating to subfolders:**
+
+```powershell
+# Interactive mode - shows menu to select script
+.\Invoke-EvilMist.ps1
+
+# Execute specific script directly
+.\Invoke-EvilMist.ps1 -Script EntraRecon -ExportPath "users.csv"
+
+# List all available scripts
+.\Invoke-EvilMist.ps1 -List
+
+# Execute with any parameters (all passed through to target script)
+.\Invoke-EvilMist.ps1 -Script EntraMFACheck -Matrix -OnlyNoMFA
+```
+
+**Available scripts:** EntraRecon, EntraMFACheck, EntraGuestCheck, EntraAppAccess, EntraRoleCheck, EntraServicePrincipalCheck, EntraConditionalAccessCheck, EntraAdminUnitCheck, EntraStaleAccountCheck, EntraDeviceCheck, EntraSSPRCheck, EntraPasswordPolicyCheck, EntraLegacyAuthCheck, EntraLicenseCheck
+
 ### Enumerate-EntraUsers (PowerShell)
 
 **Requirements:** PowerShell 7+
 
 ```powershell
-# Interactive mode
+# Using dispatcher (recommended)
+.\Invoke-EvilMist.ps1 -Script EntraRecon
+
+# Or directly from subfolder
 .\scripts\powershell\Invoke-EntraRecon.ps1
 
 # With Azure CLI token
-.\scripts\powershell\Invoke-EntraRecon.ps1 -UseAzCliToken
+.\Invoke-EvilMist.ps1 -Script EntraRecon -UseAzCliToken
 
 # Export all users
-.\scripts\powershell\Invoke-EntraRecon.ps1 -ExportPath "users.csv"
+.\Invoke-EvilMist.ps1 -Script EntraRecon -ExportPath "users.csv"
 
 # Stealth mode
-.\scripts\powershell\Invoke-EntraRecon.ps1 -EnableStealth
+.\Invoke-EvilMist.ps1 -Script EntraRecon -EnableStealth
 ```
 
 📖 **Full documentation:** [EntraRecon-PS1.md](docs/EntraRecon-PS1.md)
@@ -128,7 +151,7 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 # Install dependencies
 pip install -r requirements.txt
 
-# Run interactive mode
+# Run directly from subfolder
 python scripts\python\entra_recon.py
 ```
 
@@ -139,17 +162,20 @@ python scripts\python\entra_recon.py
 **Requirements:** PowerShell 7+, Microsoft.Graph modules
 
 ```powershell
+# Using dispatcher (recommended)
+.\Invoke-EvilMist.ps1 -Script EntraMFACheck
+
 # Scan for users without MFA
-.\scripts\powershell\Invoke-EntraMFACheck.ps1
+.\Invoke-EvilMist.ps1 -Script EntraMFACheck
 
 # Export results to CSV
-.\scripts\powershell\Invoke-EntraMFACheck.ps1 -ExportPath "no-mfa-users.csv"
+.\Invoke-EvilMist.ps1 -Script EntraMFACheck -ExportPath "no-mfa-users.csv"
 
 # Matrix view with all features
-.\scripts\powershell\Invoke-EntraMFACheck.ps1 -Matrix -IncludeDisabledUsers
+.\Invoke-EvilMist.ps1 -Script EntraMFACheck -Matrix -IncludeDisabledUsers
 
 # Stealth mode
-.\scripts\powershell\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth
+.\Invoke-EvilMist.ps1 -Script EntraMFACheck -EnableStealth -QuietStealth
 ```
 
 📖 **Full documentation:** [EntraMFACheck-PS1.md](docs/EntraMFACheck-PS1.md)
