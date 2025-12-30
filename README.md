@@ -23,8 +23,8 @@ Comprehensive Azure Entra ID (Azure AD) user enumeration and security assessment
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraRecon-PS1.md](EntraRecon-PS1.md) | `Invoke-EntraRecon.ps1` |
-| Python | [EntraRecon-PY.md](EntraRecon-PY.md) | `entra_recon.py` |
+| PowerShell | [EntraRecon-PS1.md](docs/EntraRecon-PS1.md) | `scripts/powershell/Invoke-EntraRecon.ps1` |
+| Python | [EntraRecon-PY.md](docs/EntraRecon-PY.md) | `scripts/python/entra_recon.py` |
 
 ---
 
@@ -45,7 +45,7 @@ Focused security assessment tool to identify Azure Entra ID users without Multi-
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md) | `Invoke-EntraMFACheck.ps1` |
+| PowerShell | [EntraMFACheck-PS1.md](docs/EntraMFACheck-PS1.md) | `scripts/powershell/Invoke-EntraMFACheck.ps1` |
 
 ---
 
@@ -68,7 +68,7 @@ Comprehensive guest account analysis tool to identify, analyze, and assess the s
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md) | `Invoke-EntraGuestCheck.ps1` |
+| PowerShell | [EntraGuestCheck-PS1.md](docs/EntraGuestCheck-PS1.md) | `scripts/powershell/Invoke-EntraGuestCheck.ps1` |
 
 ---
 
@@ -94,7 +94,7 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md) | `Invoke-EntraAppAccess.ps1` |
+| PowerShell | [EntraAppAccess-PS1.md](docs/EntraAppAccess-PS1.md) | `scripts/powershell/Invoke-EntraAppAccess.ps1` |
 
 ---
 
@@ -106,19 +106,19 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 
 ```powershell
 # Interactive mode
-.\Invoke-EntraRecon.ps1
+.\scripts\powershell\Invoke-EntraRecon.ps1
 
 # With Azure CLI token
-.\Invoke-EntraRecon.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraRecon.ps1 -UseAzCliToken
 
 # Export all users
-.\Invoke-EntraRecon.ps1 -ExportPath "users.csv"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -ExportPath "users.csv"
 
 # Stealth mode
-.\Invoke-EntraRecon.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraRecon.ps1 -EnableStealth
 ```
 
-📖 **Full documentation:** [EntraRecon-PS1.md](EntraRecon-PS1.md)
+📖 **Full documentation:** [EntraRecon-PS1.md](docs/EntraRecon-PS1.md)
 
 ### Enumerate-EntraUsers (Python)
 
@@ -129,10 +129,10 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 pip install -r requirements.txt
 
 # Run interactive mode
-python entra_recon.py
+python scripts\python\entra_recon.py
 ```
 
-📖 **Full documentation:** [EntraRecon-PY.md](EntraRecon-PY.md)
+📖 **Full documentation:** [EntraRecon-PY.md](docs/EntraRecon-PY.md)
 
 ### MFA Security Check (PowerShell)
 
@@ -140,19 +140,19 @@ python entra_recon.py
 
 ```powershell
 # Scan for users without MFA
-.\Invoke-EntraMFACheck.ps1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1
 
 # Export results to CSV
-.\Invoke-EntraMFACheck.ps1 -ExportPath "no-mfa-users.csv"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -ExportPath "no-mfa-users.csv"
 
 # Matrix view with all features
-.\Invoke-EntraMFACheck.ps1 -Matrix -IncludeDisabledUsers
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -Matrix -IncludeDisabledUsers
 
 # Stealth mode
-.\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth
 ```
 
-📖 **Full documentation:** [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md)
+📖 **Full documentation:** [EntraMFACheck-PS1.md](docs/EntraMFACheck-PS1.md)
 
 ### Guest Account Enumeration (PowerShell)
 
@@ -160,19 +160,19 @@ python entra_recon.py
 
 ```powershell
 # Enumerate all guest accounts
-.\Invoke-EntraGuestCheck.ps1
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1
 
 # Export results to CSV
-.\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-accounts.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-accounts.csv"
 
 # Show only guests without MFA in matrix view
-.\Invoke-EntraGuestCheck.ps1 -Matrix -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -Matrix -OnlyNoMFA
 
 # Include disabled guests with stealth mode
-.\Invoke-EntraGuestCheck.ps1 -IncludeDisabledGuests -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -IncludeDisabledGuests -EnableStealth -QuietStealth
 ```
 
-📖 **Full documentation:** [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md)
+📖 **Full documentation:** [EntraGuestCheck-PS1.md](docs/EntraGuestCheck-PS1.md)
 
 ### Critical Administrative Access Check (PowerShell)
 
@@ -180,19 +180,19 @@ python entra_recon.py
 
 ```powershell
 # Check users with critical administrative access (10 apps)
-.\Invoke-EntraAppAccess.ps1
+.\scripts\powershell\Invoke-EntraAppAccess.ps1
 
 # Export results to CSV
-.\Invoke-EntraAppAccess.ps1 -ExportPath "app-access.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -ExportPath "app-access.csv"
 
 # Show only users without MFA in matrix view
-.\Invoke-EntraAppAccess.ps1 -Matrix -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -Matrix -OnlyNoMFA
 
 # Stealth mode scan
-.\Invoke-EntraAppAccess.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -EnableStealth -QuietStealth
 ```
 
-📖 **Full documentation:** [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md)
+📖 **Full documentation:** [EntraAppAccess-PS1.md](docs/EntraAppAccess-PS1.md)
 
 ### Privileged Role Check (PowerShell)
 
@@ -200,22 +200,22 @@ python entra_recon.py
 
 ```powershell
 # Check users with privileged directory roles
-.\Invoke-EntraRoleCheck.ps1
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1
 
 # Export results to CSV
-.\Invoke-EntraRoleCheck.ps1 -ExportPath "privileged-roles.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -ExportPath "privileged-roles.csv"
 
 # Show only users without MFA in matrix view
-.\Invoke-EntraRoleCheck.ps1 -Matrix -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -Matrix -OnlyNoMFA
 
 # Show only permanent (non-PIM) assignments
-.\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -ExportPath "permanent-admins.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -ExportPath "permanent-admins.csv"
 
 # Stealth mode scan
-.\Invoke-EntraRoleCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -EnableStealth -QuietStealth
 ```
 
-📖 **Full documentation:** [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md)
+📖 **Full documentation:** [EntraRoleCheck-PS1.md](docs/EntraRoleCheck-PS1.md)
 
 ### Service Principal Security Check (PowerShell)
 
@@ -223,22 +223,22 @@ python entra_recon.py
 
 ```powershell
 # Check all service principals and analyze security posture
-.\Invoke-EntraServicePrincipalCheck.ps1
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1
 
 # Export results to CSV
-.\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "service-principals.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "service-principals.csv"
 
 # Show only service principals with expired credentials in matrix view
-.\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -OnlyExpiredCredentials
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -OnlyExpiredCredentials
 
 # Show only high-permission service principals
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -ExportPath "high-perm-sp.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -ExportPath "high-perm-sp.csv"
 
 # Stealth mode scan
-.\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -QuietStealth
 ```
 
-📖 **Full documentation:** [EntraServicePrincipalCheck-PS1.md](EntraServicePrincipalCheck-PS1.md)
+📖 **Full documentation:** [EntraServicePrincipalCheck-PS1.md](docs/EntraServicePrincipalCheck-PS1.md)
 
 **Key Features:**
 - **Comprehensive Role Coverage** - Enumerates all directory roles including CRITICAL, HIGH, MEDIUM, and LOW risk roles
@@ -255,7 +255,7 @@ python entra_recon.py
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraServicePrincipalCheck-PS1.md](EntraServicePrincipalCheck-PS1.md) | `Invoke-EntraServicePrincipalCheck.ps1` |
+| PowerShell | [EntraServicePrincipalCheck-PS1.md](docs/EntraServicePrincipalCheck-PS1.md) | `scripts/powershell/Invoke-EntraServicePrincipalCheck.ps1` |
 
 ---
 
@@ -265,40 +265,316 @@ python entra_recon.py
 
 ```powershell
 # Analyze all Conditional Access policies
-.\Invoke-EntraConditionalAccessCheck.ps1
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1
 
 # Export results to CSV
-.\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-policies.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-policies.csv"
 
 # Show only policies with exclusions in matrix view
-.\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -OnlyWithExclusions
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -OnlyWithExclusions
 
 # Show only policies without MFA enforcement
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -ExportPath "mfa-gaps.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -ExportPath "mfa-gaps.csv"
 
 # Stealth mode scan
-.\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -QuietStealth
 ```
 
-📖 **Full documentation:** [EntraConditionalAccessCheck-PS1.md](EntraConditionalAccessCheck-PS1.md)
+📖 **Full documentation:** [EntraConditionalAccessCheck-PS1.md](docs/EntraConditionalAccessCheck-PS1.md)
+
+### Administrative Unit Security Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all Administrative Units and scoped role assignments
+.\scripts\powershell\Invoke-EntraAdminUnitCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraAdminUnitCheck.ps1 -ExportPath "admin-units.csv"
+
+# Show only scoped administrators without MFA in matrix view
+.\scripts\powershell\Invoke-EntraAdminUnitCheck.ps1 -Matrix -OnlyNoMFA
+
+# Include disabled accounts
+.\scripts\powershell\Invoke-EntraAdminUnitCheck.ps1 -IncludeDisabledUsers -ExportPath "all-admins.csv"
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraAdminUnitCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraAdminUnitCheck-PS1.md](docs/EntraAdminUnitCheck-PS1.md)
 
 **Key Features:**
-- **Comprehensive Policy Analysis** - Enumerates all Conditional Access policies and analyzes configurations
-- **Exclusion Detection** - Identifies users, groups, roles, and applications excluded from policies
-- **MFA Enforcement Gaps** - Detects policies without MFA requirements
-- **Critical App Coverage** - Checks if critical applications are protected by policies
-- **Legacy Auth Detection** - Identifies policies targeting legacy authentication methods
-- **Risk Assessment** - Categorizes policies by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on gaps and exclusions
-- **Conflict Detection** - Identifies redundant or conflicting policies
-- **Coverage Gap Analysis** - Highlights areas without policy protection
+- **Administrative Unit Enumeration** - Enumerates all Administrative Units with configuration details
+- **Scoped Role Assignment Analysis** - Identifies all scoped administrators and their roles
+- **Member Enumeration** - Shows AU members and their roles
+- **MFA Status Detection** - Identify scoped administrators without Multi-Factor Authentication
+- **Last Sign-In Tracking** - Shows login date/time and activity patterns
+- **Risk Assessment** - Categorizes assignments by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on scoped admin access
+- **Activity Analytics** - Sign-in statistics, stale accounts, inactive administrators
 - **Matrix View** - Compact table format for quick visual scanning
-- **Filtering Options** - Show only policies with exclusions, MFA gaps, or include disabled policies
+- **Filtering Options** - Show only administrators without MFA or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive scoped assignment details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraAdminUnitCheck-PS1.md](docs/EntraAdminUnitCheck-PS1.md) | `scripts/powershell/Invoke-EntraAdminUnitCheck.ps1` |
+
+---
+
+### Stale Account Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Identify stale accounts and account hygiene issues
+.\scripts\powershell\Invoke-EntraStaleAccountCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraStaleAccountCheck.ps1 -ExportPath "stale-accounts.csv"
+
+# Include disabled accounts in matrix view
+.\scripts\powershell\Invoke-EntraStaleAccountCheck.ps1 -IncludeDisabledUsers -Matrix
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraStaleAccountCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraStaleAccountCheck-PS1.md](docs/EntraStaleAccountCheck-PS1.md)
+
+**Key Features:**
+- **Stale Account Detection** - Identifies accounts with no recent sign-in (>90 days)
+- **Never Signed-In Detection** - Finds accounts that have never been used
+- **License Waste Detection** - Identifies disabled accounts still assigned licenses
+- **Password Expiration Tracking** - Detects accounts with expired passwords
+- **Account Age Analysis** - Calculates account age and correlates with inactivity
+- **Risk Assessment** - Categorizes accounts by risk level (CRITICAL/HIGH/MEDIUM/LOW)
+- **Activity Analytics** - Sign-in statistics, stale account breakdowns
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Include or exclude disabled accounts
+- **Export Options** - CSV/JSON with comprehensive account details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraStaleAccountCheck-PS1.md](docs/EntraStaleAccountCheck-PS1.md) | `scripts/powershell/Invoke-EntraStaleAccountCheck.ps1` |
+
+---
+
+### Device Trust and Compliance Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all registered devices
+.\scripts\powershell\Invoke-EntraDeviceCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraDeviceCheck.ps1 -ExportPath "devices.csv"
+
+# Show only non-compliant devices in matrix view
+.\scripts\powershell\Invoke-EntraDeviceCheck.ps1 -Matrix -OnlyNonCompliant
+
+# Show only BYOD devices
+.\scripts\powershell\Invoke-EntraDeviceCheck.ps1 -OnlyBYOD -ExportPath "byod-devices.csv"
+
+# Show only devices with stale sign-ins
+.\scripts\powershell\Invoke-EntraDeviceCheck.ps1 -OnlyStale -ExportPath "stale-devices.csv"
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraDeviceCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraDeviceCheck-PS1.md](docs/EntraDeviceCheck-PS1.md)
+
+**Key Features:**
+- **Comprehensive Device Enumeration** - Enumerates all registered devices in the tenant
+- **Compliance Status Detection** - Identifies compliant, non-compliant, and unknown compliance devices
+- **BYOD Detection** - Automatically identifies personal/BYOD devices
+- **Stale Sign-In Detection** - Identifies devices with stale sign-ins (>90 days)
+- **Device Trust Analysis** - Analyzes join types (Azure AD Joined, Hybrid Joined, Registered)
+- **Management Status** - Identifies managed vs unmanaged devices
+- **Intune Compliance Policies** - Enumerates Intune compliance policies and assignments
+- **Risk Assessment** - Categorizes devices by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on compliance gaps and trust issues
+- **Activity Analytics** - Sign-in statistics, stale devices, registration dates
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only non-compliant, BYOD, or stale devices
+- **Export Options** - CSV/JSON with comprehensive device details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraDeviceCheck-PS1.md](docs/EntraDeviceCheck-PS1.md) | `scripts/powershell/Invoke-EntraDeviceCheck.ps1` |
+
+---
+
+### Self-Service Password Reset Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Check users with SSPR enabled
+.\scripts\powershell\Invoke-EntraSSPRCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraSSPRCheck.ps1 -ExportPath "sspr-users.csv"
+
+# Show only users without backup methods in matrix view
+.\scripts\powershell\Invoke-EntraSSPRCheck.ps1 -Matrix -OnlyNoBackup
+
+# Include disabled users
+.\scripts\powershell\Invoke-EntraSSPRCheck.ps1 -IncludeDisabledUsers -ExportPath "all-sspr-users.csv"
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraSSPRCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraSSPRCheck-PS1.md](docs/EntraSSPRCheck-PS1.md)
+
+**Key Features:**
+- **SSPR Status Detection** - Identifies users with SSPR enabled, registered, or capable
+- **Registration Method Analysis** - Analyzes registered authentication methods for SSPR
+- **Backup Method Detection** - Identifies users without backup methods configured
+- **Strong Method Detection** - Distinguishes between strong and weak authentication methods
+- **MFA Status Correlation** - Cross-references SSPR configuration with MFA status
+- **Last Sign-In Tracking** - Shows login date/time and activity patterns
+- **Risk Assessment** - Categorizes users by risk level (HIGH/MEDIUM/LOW) based on SSPR configuration
+- **Activity Analytics** - Sign-in statistics, stale accounts, inactive users
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only users without backup methods or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive SSPR details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraSSPRCheck-PS1.md](docs/EntraSSPRCheck-PS1.md) | `scripts/powershell/Invoke-EntraSSPRCheck.ps1` |
+
+---
+
+### Password Policy Security Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all password policies
+.\scripts\powershell\Invoke-EntraPasswordPolicyCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraPasswordPolicyCheck.ps1 -ExportPath "password-policies.csv"
+
+# Show only users with weak password policies in matrix view
+.\scripts\powershell\Invoke-EntraPasswordPolicyCheck.ps1 -Matrix -OnlyWeakPolicies
+
+# Show only users with password never expires
+.\scripts\powershell\Invoke-EntraPasswordPolicyCheck.ps1 -OnlyNeverExpires -ExportPath "never-expires.csv"
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraPasswordPolicyCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraPasswordPolicyCheck-PS1.md](docs/EntraPasswordPolicyCheck-PS1.md)
+
+**Key Features:**
+- **Password Expiration Analysis** - Checks password expiration policies per user
+- **Never Expires Detection** - Identifies users with "password never expires" flag
+- **Complexity Requirements** - Checks password complexity requirements (strong password enforcement)
+- **Weak Policy Detection** - Identifies users with weak password policies
+- **Password Age Tracking** - Calculates password age and expiration risk
+- **Risk Assessment** - Categorizes users by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on policy strength
+- **Activity Analytics** - Sign-in statistics, password age analysis, policy gaps
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only weak policies or never expires accounts
 - **Export Options** - CSV/JSON with comprehensive policy details
 - **Stealth Mode** - Configurable delays and jitter to avoid detection
 
 | Version | Documentation | File |
 |---------|---------------|------|
-| PowerShell | [EntraConditionalAccessCheck-PS1.md](EntraConditionalAccessCheck-PS1.md) | `Invoke-EntraConditionalAccessCheck.ps1` |
+| PowerShell | [EntraPasswordPolicyCheck-PS1.md](docs/EntraPasswordPolicyCheck-PS1.md) | `scripts/powershell/Invoke-EntraPasswordPolicyCheck.ps1` |
+
+---
+
+### Legacy Authentication Check (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all legacy authentication usage
+.\scripts\powershell\Invoke-EntraLegacyAuthCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraLegacyAuthCheck.ps1 -ExportPath "legacy-auth.csv"
+
+# Show only recent usage (last 30 days) in matrix view
+.\scripts\powershell\Invoke-EntraLegacyAuthCheck.ps1 -Matrix -OnlyRecent
+
+# Include disabled accounts
+.\scripts\powershell\Invoke-EntraLegacyAuthCheck.ps1 -IncludeDisabledUsers -ExportPath "all-legacy-users.csv"
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraLegacyAuthCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraLegacyAuthCheck-PS1.md](docs/EntraLegacyAuthCheck-PS1.md)
+
+**Key Features:**
+- **Legacy Protocol Detection** - Identifies 10 legacy authentication protocols (IMAP, POP3, SMTP, Exchange ActiveSync, etc.)
+- **Sign-In Log Analysis** - Queries audit logs for legacy authentication usage (last 90 days)
+- **Last Usage Tracking** - Shows last legacy authentication date and time
+- **Protocol Statistics** - Tracks successful/failed sign-ins per protocol
+- **MFA Status Detection** - Identify users without Multi-Factor Authentication using legacy auth
+- **Risk Assessment** - Categorizes users by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on usage patterns and recency
+- **Activity Analytics** - Sign-in statistics, protocol breakdowns, usage recency
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only recent usage or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive legacy auth details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraLegacyAuthCheck-PS1.md](docs/EntraLegacyAuthCheck-PS1.md) | `scripts/powershell/Invoke-EntraLegacyAuthCheck.ps1` |
+
+---
+
+### License and SKU Analysis (PowerShell)
+
+**Requirements:** PowerShell 7+, Microsoft.Graph modules
+
+```powershell
+# Analyze all license SKUs and user assignments
+.\scripts\powershell\Invoke-EntraLicenseCheck.ps1
+
+# Export results to CSV
+.\scripts\powershell\Invoke-EntraLicenseCheck.ps1 -ExportPath "licenses.csv"
+
+# Show only users with privileged licenses (E5, P2) in matrix view
+.\scripts\powershell\Invoke-EntraLicenseCheck.ps1 -Matrix -OnlyPrivilegedLicenses
+
+# Show only unused license assignments
+.\scripts\powershell\Invoke-EntraLicenseCheck.ps1 -OnlyUnusedLicenses -ExportPath "unused-licenses.csv"
+
+# Stealth mode scan
+.\scripts\powershell\Invoke-EntraLicenseCheck.ps1 -EnableStealth -QuietStealth
+```
+
+📖 **Full documentation:** [EntraLicenseCheck-PS1.md](docs/EntraLicenseCheck-PS1.md)
+
+**Key Features:**
+- **Tenant SKU Enumeration** - Lists all subscribed license SKUs and their consumption
+- **User License Assignment Tracking** - Identifies all users with license assignments
+- **Privileged License Detection** - Automatically identifies E5, P2, and other high-privilege licenses
+- **Unused License Detection** - Identifies licenses assigned to users who have never signed in
+- **Risk Assessment** - Categorizes license assignments by risk level (CRITICAL/HIGH/MEDIUM/LOW) based on license privileges
+- **License Usage Analytics** - Consumption statistics, unused license tracking, SKU breakdowns
+- **Matrix View** - Compact table format for quick visual scanning
+- **Filtering Options** - Show only privileged licenses, unused licenses, or include disabled accounts
+- **Export Options** - CSV/JSON with comprehensive license details
+- **Stealth Mode** - Configurable delays and jitter to avoid detection
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraLicenseCheck-PS1.md](docs/EntraLicenseCheck-PS1.md) | `scripts/powershell/Invoke-EntraLicenseCheck.ps1` |
 
 ---
 
@@ -306,14 +582,21 @@ python entra_recon.py
 
 | Document | Description |
 |----------|-------------|
-| [EntraRecon-PS1.md](EntraRecon-PS1.md) | Full PowerShell script documentation including all parameters, features, and usage examples |
-| [EntraRecon-PY.md](EntraRecon-PY.md) | Full Python script documentation including authentication methods, stealth configuration, and examples |
-| [EntraMFACheck-PS1.md](EntraMFACheck-PS1.md) | MFA Security Check documentation including shared mailbox detection, sign-in tracking, and risk assessment |
-| [EntraGuestCheck-PS1.md](EntraGuestCheck-PS1.md) | Guest Account Enumeration documentation including guest domain extraction, invite tracking, and security analysis |
-| [EntraAppAccess-PS1.md](EntraAppAccess-PS1.md) | PowerShell & Graph CLI Access Check documentation including app access tracking, assignment dates, and privileged access analysis |
-| [EntraRoleCheck-PS1.md](EntraRoleCheck-PS1.md) | Privileged Role Check documentation including role enumeration, PIM assignment tracking, risk assessment, and security analysis |
-| [EntraServicePrincipalCheck-PS1.md](EntraServicePrincipalCheck-PS1.md) | Service Principal Security Check documentation including credential enumeration, expiration tracking, permission analysis, owner security, and risk assessment |
-| [EntraConditionalAccessCheck-PS1.md](EntraConditionalAccessCheck-PS1.md) | Conditional Access Policy Security Check documentation including policy enumeration, exclusion detection, MFA enforcement gaps, critical app coverage, and risk assessment |
+| [EntraRecon-PS1.md](docs/EntraRecon-PS1.md) | Full PowerShell script documentation including all parameters, features, and usage examples |
+| [EntraRecon-PY.md](docs/EntraRecon-PY.md) | Full Python script documentation including authentication methods, stealth configuration, and examples |
+| [EntraMFACheck-PS1.md](docs/EntraMFACheck-PS1.md) | MFA Security Check documentation including shared mailbox detection, sign-in tracking, and risk assessment |
+| [EntraGuestCheck-PS1.md](docs/EntraGuestCheck-PS1.md) | Guest Account Enumeration documentation including guest domain extraction, invite tracking, and security analysis |
+| [EntraAppAccess-PS1.md](docs/EntraAppAccess-PS1.md) | PowerShell & Graph CLI Access Check documentation including app access tracking, assignment dates, and privileged access analysis |
+| [EntraRoleCheck-PS1.md](docs/EntraRoleCheck-PS1.md) | Privileged Role Check documentation including role enumeration, PIM assignment tracking, risk assessment, and security analysis |
+| [EntraServicePrincipalCheck-PS1.md](docs/EntraServicePrincipalCheck-PS1.md) | Service Principal Security Check documentation including credential enumeration, expiration tracking, permission analysis, owner security, and risk assessment |
+| [EntraConditionalAccessCheck-PS1.md](docs/EntraConditionalAccessCheck-PS1.md) | Conditional Access Policy Security Check documentation including policy enumeration, exclusion detection, MFA enforcement gaps, critical app coverage, and risk assessment |
+| [EntraStaleAccountCheck-PS1.md](docs/EntraStaleAccountCheck-PS1.md) | Stale Account Check documentation including stale account detection, never-signed-in detection, license waste detection, password expiration tracking, and account hygiene analysis |
+| [EntraDeviceCheck-PS1.md](docs/EntraDeviceCheck-PS1.md) | Device Trust and Compliance Check documentation including device enumeration, compliance status detection, BYOD detection, stale sign-in tracking, Intune compliance policies, and risk assessment |
+| [EntraSSPRCheck-PS1.md](docs/EntraSSPRCheck-PS1.md) | Self-Service Password Reset Check documentation including SSPR status detection, registration method analysis, backup method detection, strong method classification, MFA correlation, and risk assessment |
+| [EntraPasswordPolicyCheck-PS1.md](docs/EntraPasswordPolicyCheck-PS1.md) | Password Policy Security Check documentation including password expiration analysis, never expires detection, complexity requirements checking, weak policy identification, password age tracking, and risk assessment |
+| [EntraLegacyAuthCheck-PS1.md](docs/EntraLegacyAuthCheck-PS1.md) | Legacy Authentication Check documentation including legacy protocol detection, sign-in log analysis, last usage tracking, protocol statistics, MFA correlation, and risk assessment |
+| [EntraLicenseCheck-PS1.md](docs/EntraLicenseCheck-PS1.md) | License and SKU Analysis documentation including tenant SKU enumeration, user license assignment tracking, privileged license detection, unused license identification, and risk assessment |
+| [EntraAdminUnitCheck-PS1.md](docs/EntraAdminUnitCheck-PS1.md) | Administrative Unit Security Check documentation including AU enumeration, scoped role assignment analysis, member enumeration, MFA status detection, risk assessment, and scoped admin access analysis |
 
 ---
 
@@ -345,38 +628,64 @@ Both versions provide the same core functionality:
 
 ### Toolkit Comparison
 
-| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check | Service Principal Check | Conditional Access Check |
-|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|------------------------|--------------------------|
-| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit | Service account security audit | Security policy gap analysis |
-| User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based | Role assignment-based | Service principal-focused |
-| MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types | Advanced with method types | Owner MFA check |
-| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) | ❌ (N/A for roles) | ❌ (N/A for SPs) |
-| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic | ❌ | ❌ | ❌ |
-| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates | ❌ | ❌ | ❌ |
-| App Access Tracking | ❌ | ❌ | ❌ | ✅ Multi-app coverage | ❌ | ❌ |
-| Role Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ All directory roles | ❌ |
-| PIM Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ Eligible & Active | ❌ |
-| Credential Enumeration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Secrets & certificates |
-| Credential Expiration Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Expired & expiring soon |
-| Permission Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ High-risk & critical |
-| Owner Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ With MFA status | ❌ |
-| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates | ✅ Assignment dates & duration | ❌ | ❌ |
-| Policy Exclusion Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Users, groups, roles, apps |
-| MFA Enforcement Gaps | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy-level analysis |
-| Critical App Coverage | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ 10 critical apps |
-| Legacy Auth Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy targeting |
-| Policy Conflict Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Redundant/conflicting |
-| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | Limited (SP activity) | ❌ |
-| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
-| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Basic (age-based) | Policy gap analysis |
-| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ | ❌ |
-| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
-| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance | Service account security | Security policy gap analysis |
+| Feature | Enumerate-EntraUsers | MFA Security Check | Guest Account Enumeration | Critical Admin Access Check | Privileged Role Check | Service Principal Check | Conditional Access Check | Administrative Unit Check | Stale Account Check | Device Trust Check | SSPR Check | Password Policy Check | Legacy Auth Check | License Check |
+|---------|---------------------|-------------------|---------------------------|----------------------------|----------------------|------------------------|--------------------------|------------------------|---------------------|-------------------|-------------|---------------------|-------------------|--------------|
+| **Purpose** | Comprehensive user enumeration | Focused MFA security audit | Guest access governance | Critical administrative access audit | Privileged role assignment audit | Service account security audit | Security policy gap analysis | Scoped admin access audit | Account hygiene audit | Device trust and compliance audit | SSPR configuration audit | Password policy security audit | Legacy authentication security audit | License and SKU analysis |
+| User Enumeration | 15+ methods | Standard method | Guest-focused | App assignment-based | Role assignment-based | Service principal-focused | | | | | | Legacy auth-focused |
+| MFA Detection | Basic check | Advanced with method types | Advanced with method types | Advanced with method types | Advanced with method types | Owner MFA check | | | | | | Advanced with method types |
+| Shared Mailbox Detection | ❌ | ✅ Automatic | ❌ (N/A for guests) | ❌ (N/A for app access) | ❌ (N/A for roles) | ❌ (N/A for SPs) | | | | | | ❌ (N/A for legacy auth) |
+| Guest Domain Extraction | ❌ | ❌ | ✅ Automatic | ❌ | ❌ | ❌ | | | | | | ❌ |
+| Invite Status Tracking | ❌ | ❌ | ✅ With acceptance dates | ❌ | ❌ | ❌ | | | | | | ❌ |
+| App Access Tracking | ❌ | ❌ | ❌ | ✅ Multi-app coverage | ❌ | ❌ | | | | | | ❌ |
+| Role Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ All directory roles | ❌ | | | | | | ❌ |
+| PIM Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ✅ Eligible & Active | ❌ | | | | | | ❌ |
+| Credential Enumeration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Secrets & certificates | | | | | | ❌ |
+| Credential Expiration Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Expired & expiring soon | | | | | | ❌ |
+| Permission Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ High-risk & critical | | | | | | ❌ |
+| Owner Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ With MFA status | ❌ | | | | | ❌ |
+| Assignment Date Tracking | ❌ | ❌ | ✅ Invite dates | ✅ Assignment dates | ✅ Assignment dates & duration | ❌ | ❌ | | | | | ❌ |
+| Policy Exclusion Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Users, groups, roles, apps | | | | | ❌ |
+| MFA Enforcement Gaps | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy-level analysis | | | | | ❌ |
+| Critical App Coverage | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ 10 critical apps | | | | | ❌ |
+| Legacy Auth Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Policy targeting | | | | | ✅ 10 protocols |
+| Legacy Protocol Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | | | | | ✅ IMAP/POP3/SMTP/EAS/etc |
+| Last Legacy Auth Usage | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | | | | | ✅ Date/time tracking |
+| Protocol Statistics | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | | | | | ✅ Success/failure counts |
+| Policy Conflict Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Redundant/conflicting | ❌ | ❌ | ❌ | | | ❌ |
+| Administrative Unit Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Comprehensive | ❌ | ❌ | ❌ | | | ❌ |
+| Scoped Role Assignment Analysis | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ All scoped assignments | ❌ | ❌ | ❌ | | | ❌ |
+| AU Member Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Members and roles | ❌ | ❌ | ❌ | | | ❌ |
+| Stale Account Detection | Limited | Limited | Limited | Limited | Limited | ❌ | ❌ | Limited | ✅ >90 days inactive | ❌ | | | Limited |
+| Never Signed-In Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Account age analysis | ❌ | | | ❌ |
+| License Waste Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Disabled with licenses | ❌ | | | ❌ |
+| Password Expiration Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Expired passwords | ❌ | ❌ | ✅ Expiration analysis | ❌ |
+| SSPR Status Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Enabled/Registered/Capable | ❌ | ❌ |
+| SSPR Method Analysis | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Registration methods | ❌ | ❌ |
+| Backup Method Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ No backup methods | ❌ | ❌ |
+| Strong Method Classification | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Strong vs weak methods | ❌ | ❌ |
+| Device Enumeration | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Comprehensive | ❌ | ❌ | ❌ |
+| Compliance Status Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | | ✅ Compliant/Non-compliant/Unknown | | | ❌ |
+| BYOD Detection | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | | ✅ Automatic | | | ❌ |
+| Stale Sign-In Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | | ✅ >90 days | ✅ >90 days | | | Limited |
+| Intune Compliance Policies | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Full enumeration | | | ❌ |
+| Device Trust Analysis | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Join types | | | ❌ |
+| Management Status | ✅ Basic | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Managed/Unmanaged | | | ❌ |
+| Last Sign-In Tracking | ✅ | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | Limited (SP activity) | ❌ | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics | ✅ With analytics |
+| Sign-In Capability Check | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Tenant SKU Enumeration | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Full enumeration |
+| License Assignment Tracking | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ All assignments |
+| Privileged License Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ E5, P2, etc. |
+| Unused License Detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Disabled with licenses | ❌ | ❌ | ❌ | ❌ | ✅ Never signed in |
+| License Usage Analytics | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Consumption stats |
+| Risk Level Assessment | Basic | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) | Advanced (CRITICAL/HIGH/MEDIUM/LOW) |
+| Activity Analytics | Limited | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Basic (age-based) | Policy gap analysis | Detailed (scoped admin activity) | Detailed (stale indicators) | Detailed (stale/recent/never) | Detailed (stale/recent/never) | Detailed (password age/policy gaps) | Detailed (usage recency/protocol stats) | Detailed (license usage/unused tracking) |
+| Matrix View | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Department Analysis | ✅ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics | ❌ | ❌ | ✅ With statistics | ✅ With statistics | ❌ | ✅ With statistics | ✅ With statistics | ✅ With statistics | ✅ With statistics |
+| BloodHound Export | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| HTML Report | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| CSV/JSON Export | ✅ | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields | ✅ Enhanced fields |
+| Stealth Mode | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Best For** | Red team reconnaissance | MFA compliance audits | External user security | Privileged access audit | Privileged role governance | Service account security | Security policy gap analysis | Scoped admin access governance | Account hygiene & cleanup | Device trust and compliance | Password reset security | Password policy compliance | Legacy auth migration & security | License governance & cost optimization |
 
 ---
 
@@ -401,7 +710,7 @@ pip install azure-identity
 
 **Enumerate-EntraUsers:** The script will automatically install the required `Microsoft.Graph.Users` module on first run.
 
-**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, Privileged Role Check, Service Principal Check, and Conditional Access Check:** Require Microsoft Graph PowerShell SDK:
+**MFA Security Check, Guest Account Enumeration, Critical Admin Access Check, Privileged Role Check, Service Principal Check, Conditional Access Check, Administrative Unit Check, Stale Account Check, Device Trust Check, SSPR Check, Password Policy Check, Legacy Auth Check, and License Check:** Require Microsoft Graph PowerShell SDK:
 
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser

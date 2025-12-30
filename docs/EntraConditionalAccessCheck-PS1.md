@@ -122,99 +122,99 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Analyze all Conditional Access policies
-.\Invoke-EntraConditionalAccessCheck.ps1
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1
 ```
 
 ### Export Results
 
 ```powershell
 # Export to CSV
-.\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-policies.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-policies.csv"
 
 # Export to JSON
-.\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-results.json"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "ca-results.json"
 ```
 
 ### Include Disabled Policies
 
 ```powershell
 # Scan all policies including disabled ones
-.\Invoke-EntraConditionalAccessCheck.ps1 -IncludeDisabled -ExportPath "all-policies.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -IncludeDisabled -ExportPath "all-policies.csv"
 ```
 
 ### Show Only Policies With Exclusions
 
 ```powershell
 # Filter to show only policies with exclusions
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions
 
 # Matrix view with exclusions filter
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions -Matrix
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions -Matrix
 ```
 
 ### Show Only MFA Gaps
 
 ```powershell
 # Filter to show only policies without MFA requirement
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps
 
 # Matrix view with MFA gaps filter
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -Matrix
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -Matrix
 ```
 
 ### Matrix View
 
 ```powershell
 # Display results in compact matrix format
-.\Invoke-EntraConditionalAccessCheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -Matrix
 
 # Matrix view with export
-.\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -ExportPath "results.csv"
 ```
 
 ### Alternative Authentication Methods
 
 ```powershell
 # Use Azure CLI cached credentials
-.\Invoke-EntraConditionalAccessCheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -UseAzCliToken
 
 # Use Azure PowerShell cached credentials
-.\Invoke-EntraConditionalAccessCheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -UseAzPowerShellToken
 
 # Specify tenant
-.\Invoke-EntraConditionalAccessCheck.ps1 -TenantId "your-tenant-id"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -TenantId "your-tenant-id"
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth mode with default settings (500ms delay + 300ms jitter)
-.\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth
 
 # Stealth mode with minimal output
-.\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -QuietStealth
 
 # Custom delay and jitter
-.\Invoke-EntraConditionalAccessCheck.ps1 -RequestDelay 1.5 -RequestJitter 0.5
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -RequestDelay 1.5 -RequestJitter 0.5
 
 # Maximum stealth with custom retry
-.\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
 ```
 
 ### Advanced Combinations
 
 ```powershell
 # Comprehensive audit: all policies including disabled, with export
-.\Invoke-EntraConditionalAccessCheck.ps1 -IncludeDisabled -Matrix -ExportPath "full-audit.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -IncludeDisabled -Matrix -ExportPath "full-audit.csv"
 
 # Security focus: policies with exclusions only
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions -Matrix -ExportPath "exclusions-audit.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions -Matrix -ExportPath "exclusions-audit.csv"
 
 # MFA gap analysis
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -Matrix -ExportPath "mfa-gaps.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -Matrix -ExportPath "mfa-gaps.csv"
 
 # Stealth reconnaissance with Azure CLI token
-.\Invoke-EntraConditionalAccessCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
 ```
 
 ## Parameters
@@ -486,7 +486,7 @@ Structured format for automation:
 ```powershell
 # Disconnect and reconnect with proper scopes
 Disconnect-MgGraph
-.\Invoke-EntraConditionalAccessCheck.ps1
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1
 # Accept permission consent when prompted
 ```
 
@@ -511,10 +511,10 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 **Solution**:
 ```powershell
 # Use stealth mode to handle throttling
-.\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -MaxRetries 5
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -EnableStealth -MaxRetries 5
 
 # Or reduce load with filtering
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions
 ```
 
 ## Examples
@@ -523,7 +523,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Identify all policies and their security posture
-.\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -ExportPath "audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -Matrix -ExportPath "audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
 ```
 
 **Output**: CSV file with all policies, risk levels, and security gaps.
@@ -532,7 +532,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find policies with exclusions
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions -Matrix
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyWithExclusions -Matrix
 
 # Review output, then remediate
 ```
@@ -543,7 +543,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find policies without MFA requirement
-.\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -Matrix
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -OnlyMFAgaps -Matrix
 ```
 
 **Use Case**: Identify policies that don't enforce MFA.
@@ -552,7 +552,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Stealth mode scan using existing Azure CLI token
-.\Invoke-EntraConditionalAccessCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
 ```
 
 **Use Case**: Silent enumeration of policy gaps during engagement.
@@ -561,7 +561,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Monthly audit including disabled policies
-.\Invoke-EntraConditionalAccessCheck.ps1 -IncludeDisabled -Matrix -ExportPath "compliance_report.csv"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -IncludeDisabled -Matrix -ExportPath "compliance_report.csv"
 
 # Compare with previous month's report
 ```
@@ -603,7 +603,7 @@ Register-ScheduledTask -TaskName "Weekly CA Policy Audit" -Trigger $trigger -Act
 
 ```powershell
 # Export JSON for SIEM ingestion
-.\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "siem_feed.json"
+.\scripts\powershell\Invoke-EntraConditionalAccessCheck.ps1 -ExportPath "siem_feed.json"
 
 # Post-process for your SIEM format
 $results = Get-Content "siem_feed.json" | ConvertFrom-Json

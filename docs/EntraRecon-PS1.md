@@ -54,7 +54,7 @@ A comprehensive PowerShell script for Azure Entra ID user enumeration and securi
 $PSVersionTable.PSVersion
 
 # Run the script
-.\Invoke-EntraRecon.ps1
+.\scripts\powershell\Invoke-EntraRecon.ps1
 ```
 
 ---
@@ -221,60 +221,60 @@ The script supports multiple authentication methods:
 
 ```powershell
 # Run in interactive mode
-.\Invoke-EntraRecon.ps1
+.\scripts\powershell\Invoke-EntraRecon.ps1
 ```
 
 ### Non-Interactive Export
 
 ```powershell
 # Export all users to CSV
-.\Invoke-EntraRecon.ps1 -ExportPath "users.csv"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -ExportPath "users.csv"
 
 # Export to JSON
-.\Invoke-EntraRecon.ps1 -ExportPath "users.json"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -ExportPath "users.json"
 ```
 
 ### Use Cached Tokens
 
 ```powershell
 # Use Azure CLI token
-.\Invoke-EntraRecon.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraRecon.ps1 -UseAzCliToken
 
 # Use Azure PowerShell token
-.\Invoke-EntraRecon.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraRecon.ps1 -UseAzPowerShellToken
 ```
 
 ### Target Specific Tenant
 
 ```powershell
 # Enumerate specific tenant
-.\Invoke-EntraRecon.ps1 -TenantId "example.onmicrosoft.com"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -TenantId "example.onmicrosoft.com"
 
 # With tenant GUID
-.\Invoke-EntraRecon.ps1 -TenantId "12345678-1234-1234-1234-123456789012"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -TenantId "12345678-1234-1234-1234-123456789012"
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth with defaults (500ms delay, 300ms jitter)
-.\Invoke-EntraRecon.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraRecon.ps1 -EnableStealth
 
 # Custom stealth settings
-.\Invoke-EntraRecon.ps1 -RequestDelay 2 -RequestJitter 1
+.\scripts\powershell\Invoke-EntraRecon.ps1 -RequestDelay 2 -RequestJitter 1
 
 # Stealth with quiet output
-.\Invoke-EntraRecon.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraRecon.ps1 -EnableStealth -QuietStealth
 ```
 
 ### Combined Examples
 
 ```powershell
 # Stealth export to specific tenant
-.\Invoke-EntraRecon.ps1 -TenantId "target.com" -EnableStealth -ExportPath "output.json"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -TenantId "target.com" -EnableStealth -ExportPath "output.json"
 
 # Maximum stealth configuration
-.\Invoke-EntraRecon.ps1 -RequestDelay 5 -RequestJitter 2 -MaxRetries 5 -QuietStealth -ExportPath "stealth_enum.csv"
+.\scripts\powershell\Invoke-EntraRecon.ps1 -RequestDelay 5 -RequestJitter 2 -MaxRetries 5 -QuietStealth -ExportPath "stealth_enum.csv"
 ```
 
 ---

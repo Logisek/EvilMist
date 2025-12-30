@@ -126,7 +126,7 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Simple scan of all service principals
-.\Invoke-EntraServicePrincipalCheck.ps1
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1
 
 # The script will analyze all service principals and show security findings
 ```
@@ -135,99 +135,99 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Export to CSV
-.\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "service-principals.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "service-principals.csv"
 
 # Export to JSON
-.\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "sp-results.json"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "sp-results.json"
 ```
 
 ### Include Disabled Service Principals
 
 ```powershell
 # Scan all service principals including disabled ones
-.\Invoke-EntraServicePrincipalCheck.ps1 -IncludeDisabled -ExportPath "all-sp.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -IncludeDisabled -ExportPath "all-sp.csv"
 ```
 
 ### Show Only Service Principals With Credentials
 
 ```powershell
 # Filter to show only service principals with secrets/certificates
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials
 
 # Matrix view with credentials filter
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials -Matrix
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials -Matrix
 ```
 
 ### Show Only Expired Credentials
 
 ```powershell
 # Filter to show only service principals with expired credentials
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyExpiredCredentials
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyExpiredCredentials
 
 # Matrix view with expired credentials filter
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyExpiredCredentials -Matrix
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyExpiredCredentials -Matrix
 ```
 
 ### Show Only High-Permission Service Principals
 
 ```powershell
 # Filter to show only service principals with high-risk permissions
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission
 
 # Matrix view with high permission filter
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -Matrix
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -Matrix
 ```
 
 ### Matrix View
 
 ```powershell
 # Display results in compact matrix format
-.\Invoke-EntraServicePrincipalCheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -Matrix
 
 # Matrix view with export
-.\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -ExportPath "results.csv"
 ```
 
 ### Alternative Authentication Methods
 
 ```powershell
 # Use Azure CLI cached credentials
-.\Invoke-EntraServicePrincipalCheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -UseAzCliToken
 
 # Use Azure PowerShell cached credentials
-.\Invoke-EntraServicePrincipalCheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -UseAzPowerShellToken
 
 # Specify tenant
-.\Invoke-EntraServicePrincipalCheck.ps1 -TenantId "your-tenant-id"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -TenantId "your-tenant-id"
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth mode with default settings (500ms delay + 300ms jitter)
-.\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth
 
 # Stealth mode with minimal output
-.\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -QuietStealth
 
 # Custom delay and jitter
-.\Invoke-EntraServicePrincipalCheck.ps1 -RequestDelay 1.5 -RequestJitter 0.5
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -RequestDelay 1.5 -RequestJitter 0.5
 
 # Maximum stealth with custom retry
-.\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
 ```
 
 ### Advanced Combinations
 
 ```powershell
 # Comprehensive audit: all service principals with export
-.\Invoke-EntraServicePrincipalCheck.ps1 -IncludeDisabled -Matrix -ExportPath "full-audit.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -IncludeDisabled -Matrix -ExportPath "full-audit.csv"
 
 # Security focus: high-risk service principals only
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -OnlyExpiredCredentials -Matrix -ExportPath "high-risk-sp.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -OnlyExpiredCredentials -Matrix -ExportPath "high-risk-sp.csv"
 
 # Stealth reconnaissance with Azure CLI token
-.\Invoke-EntraServicePrincipalCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
 ```
 
 ## Parameters
@@ -489,7 +489,7 @@ Structured format for automation:
 ```powershell
 # Disconnect and reconnect with proper scopes
 Disconnect-MgGraph
-.\Invoke-EntraServicePrincipalCheck.ps1
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1
 # Accept permission consent when prompted
 ```
 
@@ -514,10 +514,10 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 **Solution**:
 ```powershell
 # Use stealth mode to handle throttling
-.\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -MaxRetries 5
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -EnableStealth -MaxRetries 5
 
 # Or reduce load with filtering
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials
 ```
 
 #### 5. Credential Information Not Available
@@ -535,7 +535,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Identify all service principals with security issues
-.\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -ExportPath "sp-audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -ExportPath "sp-audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
 ```
 
 **Output**: CSV file with all service principals, risk levels, and security findings.
@@ -544,7 +544,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find service principals with expired credentials
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyExpiredCredentials -Matrix
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyExpiredCredentials -Matrix
 ```
 
 **Use Case**: Identify immediate security risks requiring credential rotation.
@@ -553,7 +553,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find service principals with high-risk permissions
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -ExportPath "high-perm-sp.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyHighPermission -ExportPath "high-perm-sp.csv"
 ```
 
 **Use Case**: Review service principals with elevated permissions for compliance.
@@ -562,7 +562,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Stealth mode scan using existing Azure CLI token
-.\Invoke-EntraServicePrincipalCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
 ```
 
 **Use Case**: Silent enumeration of high-value service principals during engagement.
@@ -571,7 +571,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Monthly audit including disabled service principals
-.\Invoke-EntraServicePrincipalCheck.ps1 -IncludeDisabled -Matrix -ExportPath "compliance_report.csv"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -IncludeDisabled -Matrix -ExportPath "compliance_report.csv"
 
 # Compare with previous month's report
 ```
@@ -582,7 +582,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find service principals with credentials expiring soon
-.\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials -Matrix | Where-Object { $_.ExpiringSoonSecretsCount -gt 0 -or $_.ExpiringSoonCertificatesCount -gt 0 }
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -OnlyWithCredentials -Matrix | Where-Object { $_.ExpiringSoonSecretsCount -gt 0 -or $_.ExpiringSoonCertificatesCount -gt 0 }
 ```
 
 **Use Case**: Proactive credential rotation planning.
@@ -622,7 +622,7 @@ Register-ScheduledTask -TaskName "Weekly Service Principal Audit" -Trigger $trig
 
 ```powershell
 # Export JSON for SIEM ingestion
-.\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "siem_feed.json"
+.\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -ExportPath "siem_feed.json"
 
 # Post-process for your SIEM format
 $results = Get-Content "siem_feed.json" | ConvertFrom-Json
@@ -651,7 +651,7 @@ $session = New-PSSession -ComputerName "admin-server.company.com"
 
 Invoke-Command -Session $session -ScriptBlock {
     cd C:\Tools
-    .\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -ExportPath "C:\Reports\sp-audit.csv"
+    .\scripts\powershell\Invoke-EntraServicePrincipalCheck.ps1 -Matrix -ExportPath "C:\Reports\sp-audit.csv"
 }
 
 # Retrieve results

@@ -71,84 +71,84 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Simple scan of all enabled guest users
-.\Invoke-EntraGuestCheck.ps1
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1
 ```
 
 ### Export Results
 
 ```powershell
 # Export to CSV
-.\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-accounts.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-accounts.csv"
 
 # Export to JSON
-.\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-results.json"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-results.json"
 ```
 
 ### Include Disabled Guest Accounts
 
 ```powershell
 # Scan all guest users including disabled accounts
-.\Invoke-EntraGuestCheck.ps1 -IncludeDisabledGuests -ExportPath "all-guests.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -IncludeDisabledGuests -ExportPath "all-guests.csv"
 ```
 
 ### Show Only Guests Without MFA
 
 ```powershell
 # Filter to show only guests without MFA
-.\Invoke-EntraGuestCheck.ps1 -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -OnlyNoMFA
 
 # Matrix view with MFA filter
-.\Invoke-EntraGuestCheck.ps1 -Matrix -OnlyNoMFA -ExportPath "guests-no-mfa.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -Matrix -OnlyNoMFA -ExportPath "guests-no-mfa.csv"
 ```
 
 ### Matrix Display
 
 ```powershell
 # Display results in matrix/table format
-.\Invoke-EntraGuestCheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -Matrix
 
 # Matrix view with export
-.\Invoke-EntraGuestCheck.ps1 -Matrix -ExportPath "guest-matrix.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -Matrix -ExportPath "guest-matrix.csv"
 
 # Matrix view with all options
-.\Invoke-EntraGuestCheck.ps1 -Matrix -IncludeDisabledGuests -EnableStealth
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -Matrix -IncludeDisabledGuests -EnableStealth
 ```
 
 ### Specify Tenant
 
 ```powershell
 # Target a specific tenant
-.\Invoke-EntraGuestCheck.ps1 -TenantId "your-tenant-id" -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -TenantId "your-tenant-id" -ExportPath "results.csv"
 ```
 
 ### Use Existing Token
 
 ```powershell
 # Use Azure CLI cached token
-.\Invoke-EntraGuestCheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -UseAzCliToken
 
 # Use Azure PowerShell cached token
-.\Invoke-EntraGuestCheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -UseAzPowerShellToken
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth mode with default settings (500ms + 300ms jitter)
-.\Invoke-EntraGuestCheck.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -EnableStealth
 
 # Custom stealth settings
-.\Invoke-EntraGuestCheck.ps1 -RequestDelay 2 -RequestJitter 1
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -RequestDelay 2 -RequestJitter 1
 
 # Stealth mode without verbose output
-.\Invoke-EntraGuestCheck.ps1 -EnableStealth -QuietStealth -ExportPath "guests.json"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -EnableStealth -QuietStealth -ExportPath "guests.json"
 ```
 
 ### Combined Options
 
 ```powershell
 # Full featured scan
-.\Invoke-EntraGuestCheck.ps1 `
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
     -TenantId "your-tenant-id" `
     -IncludeDisabledGuests `
     -EnableStealth `
@@ -156,7 +156,7 @@ The script requires the following Microsoft Graph API permissions:
     -ExportPath "comprehensive-guest-audit.csv"
 
 # Security-focused scan (high-risk guests only)
-.\Invoke-EntraGuestCheck.ps1 `
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
     -OnlyNoMFA `
     -Matrix `
     -ExportPath "high-risk-guests.csv"
@@ -460,20 +460,20 @@ The script includes built-in stealth features to avoid detection:
 ### Stealth Recommendations
 ```powershell
 # Conservative stealth (slow but stealthy)
-.\Invoke-EntraGuestCheck.ps1 -RequestDelay 3 -RequestJitter 2 -QuietStealth
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -RequestDelay 3 -RequestJitter 2 -QuietStealth
 
 # Moderate stealth (balanced)
-.\Invoke-EntraGuestCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -EnableStealth -QuietStealth
 
 # Fast scan (minimal stealth)
-.\Invoke-EntraGuestCheck.ps1
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1
 ```
 
 ## Authentication Methods
 
 ### 1. Interactive Authentication (Default)
 ```powershell
-.\Invoke-EntraGuestCheck.ps1
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1
 ```
 - Opens browser for interactive login
 - Uses current user's credentials
@@ -485,7 +485,7 @@ The script includes built-in stealth features to avoid detection:
 az login
 
 # Run script with CLI token
-.\Invoke-EntraGuestCheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -UseAzCliToken
 ```
 
 ### 3. Azure PowerShell Token
@@ -494,7 +494,7 @@ az login
 Connect-AzAccount
 
 # Run script with PowerShell token
-.\Invoke-EntraGuestCheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -UseAzPowerShellToken
 ```
 
 ## Error Handling
@@ -611,7 +611,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser -Force
 ### Rate Limiting (429 Errors)
 ```powershell
 # Use stealth mode to reduce rate
-.\Invoke-EntraGuestCheck.ps1 -EnableStealth -MaxRetries 5
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -EnableStealth -MaxRetries 5
 ```
 
 ### "No guest users found"
@@ -624,13 +624,13 @@ Install-Module Microsoft.Graph -Scope CurrentUser -Force
 ### Example 1: Basic Guest Audit
 ```powershell
 # Scan all enabled guests and export results
-.\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-audit-$(Get-Date -Format 'yyyy-MM-dd').csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -ExportPath "guest-audit-$(Get-Date -Format 'yyyy-MM-dd').csv"
 ```
 
 ### Example 2: Security-Focused Scan
 ```powershell
 # Find high-risk guests without MFA
-.\Invoke-EntraGuestCheck.ps1 `
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
     -OnlyNoMFA `
     -Matrix `
     -ExportPath "high-risk-guests.csv"
@@ -639,7 +639,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser -Force
 ### Example 3: Comprehensive Guest Analysis
 ```powershell
 # Full tenant scan including disabled accounts
-.\Invoke-EntraGuestCheck.ps1 `
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
     -IncludeDisabledGuests `
     -ExportPath "full-guest-inventory.json" `
     -EnableStealth
@@ -648,7 +648,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser -Force
 ### Example 4: Stealth Penetration Test
 ```powershell
 # Low-profile scan with maximum stealth
-.\Invoke-EntraGuestCheck.ps1 `
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
     -UseAzCliToken `
     -RequestDelay 5 `
     -RequestJitter 3 `
@@ -662,7 +662,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser -Force
 $tenants = @("tenant1-id", "tenant2-id", "tenant3-id")
 
 foreach ($tenant in $tenants) {
-    .\Invoke-EntraGuestCheck.ps1 `
+    .\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
         -TenantId $tenant `
         -ExportPath "guests-$tenant.csv" `
         -EnableStealth
@@ -672,10 +672,10 @@ foreach ($tenant in $tenants) {
 ### Example 6: Quick Matrix Analysis
 ```powershell
 # Quick visual analysis with matrix display
-.\Invoke-EntraGuestCheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -Matrix
 
 # Matrix view showing only guests without MFA
-.\Invoke-EntraGuestCheck.ps1 `
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 `
     -Matrix `
     -OnlyNoMFA `
     -ExportPath "guests-no-mfa-matrix.csv"
@@ -705,7 +705,7 @@ $noMFA = $guests | Where-Object { $_.MFAEnabled -eq "False" }
 ```powershell
 # Schedule with Task Scheduler or cron
 $date = Get-Date -Format "yyyy-MM-dd"
-.\Invoke-EntraGuestCheck.ps1 -ExportPath "C:\Reports\Guest-Audit-$date.csv" -QuietStealth
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -ExportPath "C:\Reports\Guest-Audit-$date.csv" -QuietStealth
 
 # Email results (example)
 Send-MailMessage -To "security@company.com" `
@@ -717,7 +717,7 @@ Send-MailMessage -To "security@company.com" `
 ### Cross-Reference with Other Tools
 ```powershell
 # Get guests without MFA
-.\Invoke-EntraGuestCheck.ps1 -OnlyNoMFA -ExportPath "guests-no-mfa.csv"
+.\scripts\powershell\Invoke-EntraGuestCheck.ps1 -OnlyNoMFA -ExportPath "guests-no-mfa.csv"
 
 # Get all users without MFA
 .\Invoke-EntraMFACheck.ps1 -ExportPath "users-no-mfa.csv"

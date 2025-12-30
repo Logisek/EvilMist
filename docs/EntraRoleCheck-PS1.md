@@ -156,96 +156,96 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Simple scan of all users with privileged roles
-.\Invoke-EntraRoleCheck.ps1
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1
 ```
 
 ### Export Results
 
 ```powershell
 # Export to CSV
-.\Invoke-EntraRoleCheck.ps1 -ExportPath "privileged-roles.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -ExportPath "privileged-roles.csv"
 
 # Export to JSON
-.\Invoke-EntraRoleCheck.ps1 -ExportPath "role-results.json"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -ExportPath "role-results.json"
 ```
 
 ### Include Disabled User Accounts
 
 ```powershell
 # Scan all users including disabled accounts
-.\Invoke-EntraRoleCheck.ps1 -IncludeDisabledUsers -ExportPath "all-roles.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -IncludeDisabledUsers -ExportPath "all-roles.csv"
 ```
 
 ### Show Only Users Without MFA
 
 ```powershell
 # Filter to show only privileged users without MFA
-.\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA
 
 # Matrix view with MFA filter
-.\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA -Matrix
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA -Matrix
 ```
 
 ### Show Only Permanent Assignments
 
 ```powershell
 # Show only permanent (non-PIM) role assignments
-.\Invoke-EntraRoleCheck.ps1 -OnlyPermanent
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyPermanent
 
 # Export permanent assignments
-.\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -ExportPath "permanent-admins.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -ExportPath "permanent-admins.csv"
 ```
 
 ### Matrix View
 
 ```powershell
 # Display results in compact matrix format
-.\Invoke-EntraRoleCheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -Matrix
 
 # Matrix view with export
-.\Invoke-EntraRoleCheck.ps1 -Matrix -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -Matrix -ExportPath "results.csv"
 ```
 
 ### Alternative Authentication Methods
 
 ```powershell
 # Use Azure CLI cached credentials
-.\Invoke-EntraRoleCheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -UseAzCliToken
 
 # Use Azure PowerShell cached credentials
-.\Invoke-EntraRoleCheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -UseAzPowerShellToken
 
 # Specify tenant
-.\Invoke-EntraRoleCheck.ps1 -TenantId "your-tenant-id"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -TenantId "your-tenant-id"
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth mode with default settings (500ms delay + 300ms jitter)
-.\Invoke-EntraRoleCheck.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -EnableStealth
 
 # Stealth mode with minimal output
-.\Invoke-EntraRoleCheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -EnableStealth -QuietStealth
 
 # Custom delay and jitter
-.\Invoke-EntraRoleCheck.ps1 -RequestDelay 1.5 -RequestJitter 0.5
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -RequestDelay 1.5 -RequestJitter 0.5
 
 # Maximum stealth with custom retry
-.\Invoke-EntraRoleCheck.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
 ```
 
 ### Advanced Combinations
 
 ```powershell
 # Comprehensive audit: all users, all roles, with export
-.\Invoke-EntraRoleCheck.ps1 -IncludeDisabledUsers -Matrix -ExportPath "full-audit.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -IncludeDisabledUsers -Matrix -ExportPath "full-audit.csv"
 
 # Security focus: high-risk users only (no MFA, permanent assignments)
-.\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA -OnlyPermanent -Matrix -ExportPath "high-risk-roles.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA -OnlyPermanent -Matrix -ExportPath "high-risk-roles.csv"
 
 # Stealth reconnaissance with Azure CLI token
-.\Invoke-EntraRoleCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
 ```
 
 ## Parameters
@@ -527,7 +527,7 @@ Structured format for automation:
 ```powershell
 # Disconnect and reconnect with proper scopes
 Disconnect-MgGraph
-.\Invoke-EntraRoleCheck.ps1
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1
 # Accept permission consent when prompted (RoleManagement.Read.Directory)
 ```
 
@@ -539,7 +539,7 @@ Disconnect-MgGraph
 ```powershell
 # Disconnect and reconnect with proper scopes
 Disconnect-MgGraph
-.\Invoke-EntraRoleCheck.ps1
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1
 # Accept permission consent when prompted
 ```
 
@@ -564,10 +564,10 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 **Solution**:
 ```powershell
 # Use stealth mode to handle throttling
-.\Invoke-EntraRoleCheck.ps1 -EnableStealth -MaxRetries 5
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -EnableStealth -MaxRetries 5
 
 # Or reduce load with filtering
-.\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA
 ```
 
 ## Examples
@@ -576,7 +576,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Identify all users with privileged roles
-.\Invoke-EntraRoleCheck.ps1 -Matrix -ExportPath "audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -Matrix -ExportPath "audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
 ```
 
 **Output**: CSV file with all role assignments, risk levels, and MFA status.
@@ -585,7 +585,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find privileged users without MFA
-.\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA -Matrix
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyNoMFA -Matrix
 
 # Review output, then remediate
 ```
@@ -596,7 +596,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find permanent assignments (should be migrated to PIM)
-.\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -Matrix -ExportPath "permanent-assignments.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -OnlyPermanent -Matrix -ExportPath "permanent-assignments.csv"
 ```
 
 **Use Case**: Identify roles that should be migrated to PIM.
@@ -605,7 +605,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Stealth mode scan using existing Azure CLI token
-.\Invoke-EntraRoleCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
 ```
 
 **Use Case**: Silent enumeration of high-value targets during engagement.
@@ -614,7 +614,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Monthly audit including disabled accounts
-.\Invoke-EntraRoleCheck.ps1 -IncludeDisabledUsers -Matrix -ExportPath "compliance_report.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -IncludeDisabledUsers -Matrix -ExportPath "compliance_report.csv"
 
 # Compare with previous month's report
 ```
@@ -625,7 +625,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Scan specific tenant
-.\Invoke-EntraRoleCheck.ps1 -TenantId "customer-tenant-id" -ExportPath "customer_roles.csv"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -TenantId "customer-tenant-id" -ExportPath "customer_roles.csv"
 
 # Repeat for each tenant
 ```
@@ -667,7 +667,7 @@ Register-ScheduledTask -TaskName "Weekly Role Audit" -Trigger $trigger -Action $
 
 ```powershell
 # Export JSON for SIEM ingestion
-.\Invoke-EntraRoleCheck.ps1 -ExportPath "siem_feed.json"
+.\scripts\powershell\Invoke-EntraRoleCheck.ps1 -ExportPath "siem_feed.json"
 
 # Post-process for your SIEM format
 $results = Get-Content "siem_feed.json" | ConvertFrom-Json
@@ -697,7 +697,7 @@ $session = New-PSSession -ComputerName "admin-server.company.com"
 
 Invoke-Command -Session $session -ScriptBlock {
     cd C:\Tools
-    .\Invoke-EntraRoleCheck.ps1 -Matrix -ExportPath "C:\Reports\roles.csv"
+    .\scripts\powershell\Invoke-EntraRoleCheck.ps1 -Matrix -ExportPath "C:\Reports\roles.csv"
 }
 
 # Retrieve results

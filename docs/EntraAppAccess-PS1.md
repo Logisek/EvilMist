@@ -182,7 +182,7 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Simple scan of all users with app access
-.\Invoke-EntraAppAccess.ps1
+.\scripts\powershell\Invoke-EntraAppAccess.ps1
 
 # During the scan, you'll see which apps have default access:
 # [!] IMPORTANT: The following apps have DEFAULT ACCESS (all users):
@@ -197,79 +197,79 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Export to CSV
-.\Invoke-EntraAppAccess.ps1 -ExportPath "app-access.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -ExportPath "app-access.csv"
 
 # Export to JSON
-.\Invoke-EntraAppAccess.ps1 -ExportPath "app-results.json"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -ExportPath "app-results.json"
 ```
 
 ### Include Disabled User Accounts
 
 ```powershell
 # Scan all users including disabled accounts
-.\Invoke-EntraAppAccess.ps1 -IncludeDisabledUsers -ExportPath "all-app-users.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -IncludeDisabledUsers -ExportPath "all-app-users.csv"
 ```
 
 ### Show Only Users Without MFA
 
 ```powershell
 # Filter to show only users without MFA
-.\Invoke-EntraAppAccess.ps1 -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -OnlyNoMFA
 
 # Matrix view with MFA filter
-.\Invoke-EntraAppAccess.ps1 -OnlyNoMFA -Matrix
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -OnlyNoMFA -Matrix
 ```
 
 ### Matrix View
 
 ```powershell
 # Display results in compact matrix format
-.\Invoke-EntraAppAccess.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -Matrix
 
 # Matrix view with export
-.\Invoke-EntraAppAccess.ps1 -Matrix -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -Matrix -ExportPath "results.csv"
 ```
 
 ### Alternative Authentication Methods
 
 ```powershell
 # Use Azure CLI cached credentials
-.\Invoke-EntraAppAccess.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -UseAzCliToken
 
 # Use Azure PowerShell cached credentials
-.\Invoke-EntraAppAccess.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -UseAzPowerShellToken
 
 # Specify tenant
-.\Invoke-EntraAppAccess.ps1 -TenantId "your-tenant-id"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -TenantId "your-tenant-id"
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth mode with default settings (500ms delay + 300ms jitter)
-.\Invoke-EntraAppAccess.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -EnableStealth
 
 # Stealth mode with minimal output
-.\Invoke-EntraAppAccess.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -EnableStealth -QuietStealth
 
 # Custom delay and jitter
-.\Invoke-EntraAppAccess.ps1 -RequestDelay 1.5 -RequestJitter 0.5
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -RequestDelay 1.5 -RequestJitter 0.5
 
 # Maximum stealth with custom retry
-.\Invoke-EntraAppAccess.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -EnableStealth -MaxRetries 5 -QuietStealth
 ```
 
 ### Advanced Combinations
 
 ```powershell
 # Comprehensive audit: all users, all apps, with export
-.\Invoke-EntraAppAccess.ps1 -IncludeDisabledUsers -Matrix -ExportPath "full-audit.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -IncludeDisabledUsers -Matrix -ExportPath "full-audit.csv"
 
 # Security focus: high-risk users only (no MFA)
-.\Invoke-EntraAppAccess.ps1 -OnlyNoMFA -Matrix -ExportPath "high-risk-access.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -OnlyNoMFA -Matrix -ExportPath "high-risk-access.csv"
 
 # Stealth reconnaissance with Azure CLI token
-.\Invoke-EntraAppAccess.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "recon.json"
 ```
 
 ## Parameters
@@ -555,7 +555,7 @@ Structured format for automation:
 ```powershell
 # Disconnect and reconnect with proper scopes
 Disconnect-MgGraph
-.\Invoke-EntraAppAccess.ps1
+.\scripts\powershell\Invoke-EntraAppAccess.ps1
 # Accept permission consent when prompted
 ```
 
@@ -580,10 +580,10 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 **Solution**:
 ```powershell
 # Use stealth mode to handle throttling
-.\Invoke-EntraAppAccess.ps1 -EnableStealth -MaxRetries 5
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -EnableStealth -MaxRetries 5
 
 # Or reduce load with filtering
-.\Invoke-EntraAppAccess.ps1 -OnlyNoMFA
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -OnlyNoMFA
 ```
 
 ## Examples
@@ -592,7 +592,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Identify all users with PowerShell/CLI access
-.\Invoke-EntraAppAccess.ps1 -Matrix -ExportPath "audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -Matrix -ExportPath "audit_$(Get-Date -Format 'yyyy-MM-dd').csv"
 ```
 
 **Output**: CSV file with all users, risk levels, and MFA status.
@@ -601,7 +601,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Find users with privileged access but no MFA
-.\Invoke-EntraAppAccess.ps1 -OnlyNoMFA -Matrix
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -OnlyNoMFA -Matrix
 
 # Review output, then remediate
 ```
@@ -612,7 +612,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Stealth mode scan using existing Azure CLI token
-.\Invoke-EntraAppAccess.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -UseAzCliToken -EnableStealth -QuietStealth -ExportPath "targets.json"
 ```
 
 **Use Case**: Silent enumeration of high-value targets during engagement.
@@ -621,7 +621,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Monthly audit including disabled accounts
-.\Invoke-EntraAppAccess.ps1 -IncludeDisabledUsers -Matrix -ExportPath "compliance_report.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -IncludeDisabledUsers -Matrix -ExportPath "compliance_report.csv"
 
 # Compare with previous month's report
 ```
@@ -632,7 +632,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 
 ```powershell
 # Scan specific tenant
-.\Invoke-EntraAppAccess.ps1 -TenantId "customer-tenant-id" -ExportPath "customer_access.csv"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -TenantId "customer-tenant-id" -ExportPath "customer_access.csv"
 
 # Repeat for each tenant
 ```
@@ -674,7 +674,7 @@ Register-ScheduledTask -TaskName "Weekly App Access Audit" -Trigger $trigger -Ac
 
 ```powershell
 # Export JSON for SIEM ingestion
-.\Invoke-EntraAppAccess.ps1 -ExportPath "siem_feed.json"
+.\scripts\powershell\Invoke-EntraAppAccess.ps1 -ExportPath "siem_feed.json"
 
 # Post-process for your SIEM format
 $results = Get-Content "siem_feed.json" | ConvertFrom-Json
@@ -702,7 +702,7 @@ $session = New-PSSession -ComputerName "admin-server.company.com"
 
 Invoke-Command -Session $session -ScriptBlock {
     cd C:\Tools
-    .\Invoke-EntraAppAccess.ps1 -Matrix -ExportPath "C:\Reports\access.csv"
+    .\scripts\powershell\Invoke-EntraAppAccess.ps1 -Matrix -ExportPath "C:\Reports\access.csv"
 }
 
 # Retrieve results

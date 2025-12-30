@@ -67,74 +67,74 @@ The script requires the following Microsoft Graph API permissions:
 
 ```powershell
 # Simple scan of all enabled users
-.\Invoke-EntraMFACheck.ps1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1
 ```
 
 ### Export Results
 
 ```powershell
 # Export to CSV
-.\Invoke-EntraMFACheck.ps1 -ExportPath "no-mfa-users.csv"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -ExportPath "no-mfa-users.csv"
 
 # Export to JSON
-.\Invoke-EntraMFACheck.ps1 -ExportPath "results.json"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -ExportPath "results.json"
 ```
 
 ### Include Disabled Accounts
 
 ```powershell
 # Scan all users including disabled accounts
-.\Invoke-EntraMFACheck.ps1 -IncludeDisabledUsers -ExportPath "all-users-no-mfa.csv"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -IncludeDisabledUsers -ExportPath "all-users-no-mfa.csv"
 ```
 
 ### Matrix Display
 
 ```powershell
 # Display results in matrix/table format
-.\Invoke-EntraMFACheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -Matrix
 
 # Matrix view with export
-.\Invoke-EntraMFACheck.ps1 -Matrix -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -Matrix -ExportPath "results.csv"
 
 # Matrix view with all options
-.\Invoke-EntraMFACheck.ps1 -Matrix -IncludeDisabledUsers -EnableStealth
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -Matrix -IncludeDisabledUsers -EnableStealth
 ```
 
 ### Specify Tenant
 
 ```powershell
 # Target a specific tenant
-.\Invoke-EntraMFACheck.ps1 -TenantId "your-tenant-id" -ExportPath "results.csv"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -TenantId "your-tenant-id" -ExportPath "results.csv"
 ```
 
 ### Use Existing Token
 
 ```powershell
 # Use Azure CLI cached token
-.\Invoke-EntraMFACheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -UseAzCliToken
 
 # Use Azure PowerShell cached token
-.\Invoke-EntraMFACheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -UseAzPowerShellToken
 ```
 
 ### Stealth Mode
 
 ```powershell
 # Enable stealth mode with default settings (500ms + 300ms jitter)
-.\Invoke-EntraMFACheck.ps1 -EnableStealth
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -EnableStealth
 
 # Custom stealth settings
-.\Invoke-EntraMFACheck.ps1 -RequestDelay 2 -RequestJitter 1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -RequestDelay 2 -RequestJitter 1
 
 # Stealth mode without verbose output
-.\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth -ExportPath "results.json"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth -ExportPath "results.json"
 ```
 
 ### Combined Options
 
 ```powershell
 # Full featured scan
-.\Invoke-EntraMFACheck.ps1 `
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 `
     -TenantId "your-tenant-id" `
     -IncludeDisabledUsers `
     -EnableStealth `
@@ -379,20 +379,20 @@ The script includes built-in stealth features to avoid detection:
 ### Stealth Recommendations
 ```powershell
 # Conservative stealth (slow but stealthy)
-.\Invoke-EntraMFACheck.ps1 -RequestDelay 3 -RequestJitter 2 -QuietStealth
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -RequestDelay 3 -RequestJitter 2 -QuietStealth
 
 # Moderate stealth (balanced)
-.\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -EnableStealth -QuietStealth
 
 # Fast scan (minimal stealth)
-.\Invoke-EntraMFACheck.ps1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1
 ```
 
 ## Authentication Methods
 
 ### 1. Interactive Authentication (Default)
 ```powershell
-.\Invoke-EntraMFACheck.ps1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1
 ```
 - Opens browser for interactive login
 - Uses current user's credentials
@@ -404,7 +404,7 @@ The script includes built-in stealth features to avoid detection:
 az login
 
 # Run script with CLI token
-.\Invoke-EntraMFACheck.ps1 -UseAzCliToken
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -UseAzCliToken
 ```
 
 ### 3. Azure PowerShell Token
@@ -413,7 +413,7 @@ az login
 Connect-AzAccount
 
 # Run script with PowerShell token
-.\Invoke-EntraMFACheck.ps1 -UseAzPowerShellToken
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -UseAzPowerShellToken
 ```
 
 ## Error Handling
@@ -519,14 +519,14 @@ Install-Module Microsoft.Graph -Scope CurrentUser -Force
 Get-Module Microsoft.Graph* | Remove-Module -Force
 
 # Run the script again (it now handles module loading properly)
-.\Invoke-EntraMFACheck.ps1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1
 ```
 
 **Solution 3: Start fresh PowerShell session**
 ```powershell
 # Close PowerShell and open a new session
 # Then run the script
-.\Invoke-EntraMFACheck.ps1
+.\scripts\powershell\Invoke-EntraMFACheck.ps1
 ```
 
 ### Permission Denied
@@ -537,7 +537,7 @@ Get-Module Microsoft.Graph* | Remove-Module -Force
 ### Rate Limiting (429 Errors)
 ```powershell
 # Use stealth mode to reduce rate
-.\Invoke-EntraMFACheck.ps1 -EnableStealth -MaxRetries 5
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -EnableStealth -MaxRetries 5
 ```
 
 ### Authentication Timeout
@@ -557,13 +557,13 @@ Install-Module Microsoft.Graph.Identity.SignIns -Scope CurrentUser -Force
 ### Example 1: Basic Security Audit
 ```powershell
 # Scan all enabled users and export results
-.\Invoke-EntraMFACheck.ps1 -ExportPath "mfa-audit-$(Get-Date -Format 'yyyy-MM-dd').csv"
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -ExportPath "mfa-audit-$(Get-Date -Format 'yyyy-MM-dd').csv"
 ```
 
 ### Example 2: Comprehensive Scan
 ```powershell
 # Full tenant scan including disabled accounts
-.\Invoke-EntraMFACheck.ps1 `
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 `
     -IncludeDisabledUsers `
     -ExportPath "full-mfa-audit.json" `
     -EnableStealth
@@ -572,7 +572,7 @@ Install-Module Microsoft.Graph.Identity.SignIns -Scope CurrentUser -Force
 ### Example 3: Stealth Penetration Test
 ```powershell
 # Low-profile scan with maximum stealth
-.\Invoke-EntraMFACheck.ps1 `
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 `
     -UseAzCliToken `
     -RequestDelay 5 `
     -RequestJitter 3 `
@@ -586,7 +586,7 @@ Install-Module Microsoft.Graph.Identity.SignIns -Scope CurrentUser -Force
 $tenants = @("tenant1-id", "tenant2-id", "tenant3-id")
 
 foreach ($tenant in $tenants) {
-    .\Invoke-EntraMFACheck.ps1 `
+    .\scripts\powershell\Invoke-EntraMFACheck.ps1 `
         -TenantId $tenant `
         -ExportPath "mfa-audit-$tenant.csv" `
         -EnableStealth
@@ -596,16 +596,16 @@ foreach ($tenant in $tenants) {
 ### Example 5: Matrix View for Quick Analysis
 ```powershell
 # Quick visual analysis with matrix display
-.\Invoke-EntraMFACheck.ps1 -Matrix
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -Matrix
 
 # Matrix view with comprehensive scan
-.\Invoke-EntraMFACheck.ps1 `
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 `
     -Matrix `
     -IncludeDisabledUsers `
     -ExportPath "full-matrix-report.csv"
 
 # Stealth matrix scan for pentesting
-.\Invoke-EntraMFACheck.ps1 `
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 `
     -UseAzCliToken `
     -Matrix `
     -EnableStealth `
@@ -631,7 +631,7 @@ $byDept = $results | Group-Object Department | Sort-Object Count -Descending
 ```powershell
 # Schedule with Task Scheduler or cron
 $date = Get-Date -Format "yyyy-MM-dd"
-.\Invoke-EntraMFACheck.ps1 -ExportPath "C:\Reports\MFA-Audit-$date.csv" -QuietStealth
+.\scripts\powershell\Invoke-EntraMFACheck.ps1 -ExportPath "C:\Reports\MFA-Audit-$date.csv" -QuietStealth
 
 # Email results (example)
 Send-MailMessage -To "security@company.com" `

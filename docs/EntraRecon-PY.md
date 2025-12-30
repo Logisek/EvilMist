@@ -239,7 +239,7 @@ You can also use the extended Microsoft Apps database (4000+ App IDs) or provide
 
 ```bash
 # Run in interactive mode
-python entra_recon.py
+python scripts\python\entra_recon.py
 ```
 
 ### Authentication Examples
@@ -266,7 +266,7 @@ export GRAPH_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGc..."
 export AZURE_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGc..."
 
 # Run script and select option 9 (Environment Variable)
-python entra_recon.py
+python scripts\python\entra_recon.py
 ```
 
 ### Using Refresh Tokens
@@ -275,7 +275,7 @@ python entra_recon.py
 # Useful for tokens obtained from other tools
 # Example with ROADtools or TokenTactics output
 
-python entra_recon.py
+python scripts\python\entra_recon.py
 # Select option 11 (Refresh Token Exchange)
 # Paste the refresh token when prompted
 # Specify tenant ID (or press Enter for 'common')
