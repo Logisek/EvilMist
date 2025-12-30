@@ -24,6 +24,7 @@
     - EntraPasswordPolicyCheck
     - EntraLegacyAuthCheck
     - EntraLicenseCheck
+    - EntraDirectorySyncCheck
 
 .PARAMETER List
     List all available scripts and exit.
@@ -43,14 +44,8 @@
     # Lists all available scripts
 #>
 
-[CmdletBinding()]
-param(
-    [Parameter(Position = 0)]
-    [string]$Script,
-    
-    [Parameter()]
-    [switch]$List
-)
+# NO param() block - this allows any parameters to pass through without validation
+# We parse $args manually to extract -Script and -List, and pass everything else to the target script
 
 # Define available scripts mapping
 $AvailableScripts = @{
@@ -68,6 +63,7 @@ $AvailableScripts = @{
     'EntraPasswordPolicyCheck' = 'Invoke-EntraPasswordPolicyCheck.ps1'
     'EntraLegacyAuthCheck' = 'Invoke-EntraLegacyAuthCheck.ps1'
     'EntraLicenseCheck' = 'Invoke-EntraLicenseCheck.ps1'
+    'EntraDirectorySyncCheck' = 'Invoke-EntraDirectorySyncCheck.ps1'
 }
 
 # Script descriptions for display
@@ -86,6 +82,7 @@ $ScriptDescriptions = @{
     'EntraPasswordPolicyCheck' = 'Password policy security check'
     'EntraLegacyAuthCheck' = 'Legacy authentication usage check'
     'EntraLicenseCheck' = 'License and SKU analysis'
+    'EntraDirectorySyncCheck' = 'Directory sync status and health check'
 }
 
 function Show-AvailableScripts {
@@ -144,6 +141,35 @@ function Show-InteractiveMenu {
     return Show-InteractiveMenu
 }
 
+# Parse arguments manually from $args
+# This allows us to capture -Script and -List while passing everything else through
+$Script = $null
+$List = $false
+$PassthroughArgs = @()
+
+for ($i = 0; $i -lt $args.Count; $i++) {
+    $arg = $args[$i]
+    
+    if ($arg -eq '-Script' -or $arg -eq '/Script') {
+        # Next argument is the script name
+        if ($i + 1 -lt $args.Count) {
+            $Script = $args[$i + 1]
+            $i++  # Skip the next argument since we consumed it
+        }
+    }
+    elseif ($arg -eq '-List' -or $arg -eq '/List') {
+        $List = $true
+    }
+    elseif ($arg -match '^-Script:(.+)$' -or $arg -match '^/Script:(.+)$') {
+        # Handle -Script:Value syntax
+        $Script = $matches[1]
+    }
+    else {
+        # Pass through to target script
+        $PassthroughArgs += $arg
+    }
+}
+
 # Main execution
 $ScriptsPath = Join-Path $PSScriptRoot "scripts\powershell"
 
@@ -188,6 +214,10 @@ Write-Host "Description: $($ScriptDescriptions[$Script])" -ForegroundColor Gray
 Write-Host "Path: $ScriptPath" -ForegroundColor Gray
 Write-Host ""
 
-# Execute the script with all remaining parameters passed through
-& $ScriptPath @args
-
+# Execute the script with passthrough arguments
+if ($PassthroughArgs.Count -gt 0) {
+    & $ScriptPath @PassthroughArgs
+}
+else {
+    & $ScriptPath
+}
