@@ -28,6 +28,19 @@
     - EntraPowerPlatformCheck
     - EntraAttackPathCheck
     - EntraAzureRBACCheck
+    - EntraOAuthConsentCheck
+    - EntraSignInRiskCheck
+    - EntraPIMCheck
+    - EntraKeyVaultCheck
+    - EntraStorageAccountCheck
+    - EntraNetworkSecurityCheck
+    - EntraManagedIdentityCheck
+    - EntraExchangeCheck
+    - EntraSharePointCheck
+    - EntraTeamsCheck
+    - EntraAzureAttackPathCheck
+    - EntraReport
+    - EntraComplianceCheck
 
 .PARAMETER List
     List all available scripts and exit.
@@ -80,6 +93,19 @@ $AvailableScripts = @{
     'EntraApplicationCheck' = 'Invoke-EntraApplicationCheck.ps1'
     'EntraAttackPathCheck' = 'Invoke-EntraAttackPathCheck.ps1'
     'EntraAzureRBACCheck' = 'Invoke-EntraAzureRBACCheck.ps1'
+    'EntraOAuthConsentCheck' = 'Invoke-EntraOAuthConsentCheck.ps1'
+    'EntraSignInRiskCheck' = 'Invoke-EntraSignInRiskCheck.ps1'
+    'EntraPIMCheck' = 'Invoke-EntraPIMCheck.ps1'
+    'EntraKeyVaultCheck' = 'Invoke-EntraKeyVaultCheck.ps1'
+    'EntraStorageAccountCheck' = 'Invoke-EntraStorageAccountCheck.ps1'
+    'EntraNetworkSecurityCheck' = 'Invoke-EntraNetworkSecurityCheck.ps1'
+    'EntraManagedIdentityCheck' = 'Invoke-EntraManagedIdentityCheck.ps1'
+    'EntraExchangeCheck' = 'Invoke-EntraExchangeCheck.ps1'
+    'EntraSharePointCheck' = 'Invoke-EntraSharePointCheck.ps1'
+    'EntraTeamsCheck' = 'Invoke-EntraTeamsCheck.ps1'
+    'EntraAzureAttackPathCheck' = 'Invoke-EntraAzureAttackPathCheck.ps1'
+    'EntraReport' = 'Invoke-EntraReport.ps1'
+    'EntraComplianceCheck' = 'Invoke-EntraComplianceCheck.ps1'
 }
 
 # Script descriptions for display
@@ -104,6 +130,19 @@ $ScriptDescriptions = @{
     'EntraApplicationCheck' = 'Application registration security check'
     'EntraAttackPathCheck' = 'Attack path analysis - privilege escalation and lateral movement'
     'EntraAzureRBACCheck' = 'Azure RBAC role assignment audit and drift detection'
+    'EntraOAuthConsentCheck' = 'OAuth consent grant audit - detect illicit consent attacks'
+    'EntraSignInRiskCheck' = 'Identity Protection analysis - risky users and sign-in risk detection'
+    'EntraPIMCheck' = 'Privileged Identity Management (PIM) configuration audit'
+    'EntraKeyVaultCheck' = 'Azure Key Vault security audit - secrets exposure and misconfiguration'
+    'EntraStorageAccountCheck' = 'Azure Storage Account security audit - exposed storage and data exfiltration risks'
+    'EntraNetworkSecurityCheck' = 'Azure Network Security audit - NSG rules, open ports, lateral movement paths'
+    'EntraManagedIdentityCheck' = 'Azure Managed Identity audit - excessive permissions and security risks'
+    'EntraExchangeCheck' = 'Exchange Online security audit - inbox rules, forwarding, mail flow analysis'
+    'EntraSharePointCheck' = 'SharePoint Online security audit - sharing settings, external access, oversharing risks'
+    'EntraTeamsCheck' = 'Microsoft Teams security audit - external access, guest policies, meeting security'
+    'EntraAzureAttackPathCheck' = 'Cross-service Azure attack path analysis - VM to Key Vault, privilege escalation, lateral movement'
+    'EntraReport' = 'Consolidated HTML security report generator - executive dashboard and remediation matrix'
+    'EntraComplianceCheck' = 'Compliance assessment with CIS/NIST/SOC2/ISO27001/GDPR benchmark mapping'
 }
 
 function Show-AvailableScripts {

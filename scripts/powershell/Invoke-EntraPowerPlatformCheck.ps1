@@ -1617,8 +1617,24 @@ function Export-Results {
 function Invoke-Cleanup {
     Write-Host "`n[*] Cleaning up..." -ForegroundColor Cyan
     try {
+        # Disconnect from Microsoft Graph
         Disconnect-MgGraph -ErrorAction SilentlyContinue | Out-Null
         Write-Host "[+] Disconnected from Microsoft Graph" -ForegroundColor Green
+        # Disconnect from Azure PowerShell if connected
+        if (Get-Command -Name Get-AzContext -ErrorAction SilentlyContinue) {
+            if (Get-AzContext -ErrorAction SilentlyContinue) {
+                Disconnect-AzAccount -ErrorAction SilentlyContinue | Out-Null
+                Write-Host "[+] Disconnected from Azure PowerShell" -ForegroundColor Green
+            }
+        }
+        # Clear Azure CLI token cache (logout)
+        try {
+            $azCliAccount = az account show 2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($azCliAccount) {
+                az logout 2>$null
+                Write-Host "[+] Disconnected from Azure CLI" -ForegroundColor Green
+            }
+        } catch { }
     }
     catch {
         # Silent cleanup

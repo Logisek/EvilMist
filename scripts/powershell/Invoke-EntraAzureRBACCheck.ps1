@@ -3151,12 +3151,32 @@ function Show-AllUsersPermissionsMatrix {
 function Invoke-Cleanup {
     Write-Host "`n[*] Cleaning up..." -ForegroundColor Cyan
     try {
-        Disconnect-MgGraph -ErrorAction SilentlyContinue | Out-Null
-        Write-Host "[+] Disconnected from Microsoft Graph" -ForegroundColor Green
+        # Disconnect from Azure PowerShell
+        if (Get-AzContext -ErrorAction SilentlyContinue) {
+            Disconnect-AzAccount -ErrorAction SilentlyContinue | Out-Null
+            Write-Host "[+] Disconnected from Azure PowerShell" -ForegroundColor Green
+        }
+        # Disconnect from Microsoft Graph
+        try {
+            $mgContext = Get-MgContext -ErrorAction SilentlyContinue
+            if ($mgContext) {
+                Disconnect-MgGraph -ErrorAction SilentlyContinue | Out-Null
+                Write-Host "[+] Disconnected from Microsoft Graph" -ForegroundColor Green
+            }
+        } catch { }
+        # Clear Azure CLI token cache (logout)
+        try {
+            $azCliAccount = az account show 2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($azCliAccount) {
+                az logout 2>$null
+                Write-Host "[+] Disconnected from Azure CLI" -ForegroundColor Green
+            }
+        } catch { }
     }
     catch {
         # Silent cleanup
     }
+    Write-Host "[+] Cleanup complete" -ForegroundColor Green
 }
 
 function Main {
