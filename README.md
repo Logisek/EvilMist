@@ -10,6 +10,26 @@ EvilMist is a collection of scripts and utilities designed to support cloud secu
 
 ## Tools
 
+### Unauthenticated Entra ID Enumeration
+
+Unauthenticated Azure/Entra ID enumeration and reconnaissance tool. Performs passive/semi-passive enumeration using publicly accessible APIs and DNS queries without requiring any authentication tokens.
+
+**Key Features:**
+- **No Authentication Required** - Works without Azure tokens or credentials
+- **Tenant Discovery** - Retrieve tenant ID, name, region via azmap.dev and OpenID config
+- **Domain Realm Analysis** - Identify Managed vs Federated authentication
+- **User Existence Checking** - Verify email addresses via GetCredentialType API
+- **DNS Reconnaissance** - Enumerate MX, SPF, TXT, CNAME, SRV, Autodiscover records
+- **Port Scanning** - Check common Azure ports (HTTPS, LDAP, Kerberos, RDP)
+- **Stealth Mode** - Configurable delays and jitter to avoid rate limiting
+- **Export Options** - JSON and CSV export formats
+
+| Version | Documentation | File |
+|---------|---------------|------|
+| PowerShell | [EntraEnum-PS1.md](docs/EntraEnum-PS1.md) | `scripts/powershell/Invoke-EntraEnum.ps1` |
+
+---
+
 ### Enumerate-EntraUsers
 
 Comprehensive Azure Entra ID (Azure AD) user enumeration and security assessment tool, available in both PowerShell and Python versions.
@@ -122,7 +142,30 @@ Comprehensive security assessment tool to identify Azure Entra ID users with acc
 .\Invoke-EvilMist.ps1 -Script EntraMFACheck -Matrix -OnlyNoMFA
 ```
 
-**Available scripts:** EntraRecon, EntraMFACheck, EntraGuestCheck, EntraAppAccess, EntraRoleCheck, EntraServicePrincipalCheck, EntraConditionalAccessCheck, EntraAdminUnitCheck, EntraStaleAccountCheck, EntraDeviceCheck, EntraSSPRCheck, EntraPasswordPolicyCheck, EntraLegacyAuthCheck, EntraLicenseCheck, EntraDirectorySyncCheck, EntraPowerPlatformCheck, EntraGroupCheck, EntraApplicationCheck, EntraAttackPathCheck, EntraAzureRBACCheck, EntraOAuthConsentCheck, EntraSignInRiskCheck, EntraPIMCheck, EntraKeyVaultCheck, EntraStorageAccountCheck, EntraNetworkSecurityCheck, EntraManagedIdentityCheck, EntraExchangeCheck, EntraSharePointCheck, EntraTeamsCheck, EntraAzureAttackPathCheck, EntraReport, EntraComplianceCheck
+**Available scripts:** EntraEnum, EntraRecon, EntraMFACheck, EntraGuestCheck, EntraAppAccess, EntraRoleCheck, EntraServicePrincipalCheck, EntraConditionalAccessCheck, EntraAdminUnitCheck, EntraStaleAccountCheck, EntraDeviceCheck, EntraSSPRCheck, EntraPasswordPolicyCheck, EntraLegacyAuthCheck, EntraLicenseCheck, EntraDirectorySyncCheck, EntraPowerPlatformCheck, EntraGroupCheck, EntraApplicationCheck, EntraAttackPathCheck, EntraAzureRBACCheck, EntraOAuthConsentCheck, EntraSignInRiskCheck, EntraPIMCheck, EntraKeyVaultCheck, EntraStorageAccountCheck, EntraNetworkSecurityCheck, EntraManagedIdentityCheck, EntraExchangeCheck, EntraSharePointCheck, EntraTeamsCheck, EntraAzureAttackPathCheck, EntraReport, EntraComplianceCheck
+
+### Unauthenticated Entra ID Enumeration (PowerShell)
+
+**Requirements:** PowerShell 7+ (no additional modules needed)
+
+```powershell
+# Basic domain enumeration (TenantInfo, DomainRealm, DNS)
+.\Invoke-EvilMist.ps1 -Script EntraEnum -Domain contoso.com
+
+# Check if email exists
+.\Invoke-EvilMist.ps1 -Script EntraEnum -Email admin@contoso.com -UserEnum
+
+# Bulk user enumeration from file
+.\Invoke-EvilMist.ps1 -Script EntraEnum -EmailList users.txt -UserEnum -Throttle 1
+
+# Full enumeration with export
+.\Invoke-EvilMist.ps1 -Script EntraEnum -Domain contoso.com -All -ExportPath results.json
+
+# Stealth mode
+.\Invoke-EvilMist.ps1 -Script EntraEnum -Domain contoso.com -All -EnableStealth
+```
+
+📖 **Full documentation:** [EntraEnum-PS1.md](docs/EntraEnum-PS1.md)
 
 ### Enumerate-EntraUsers (PowerShell)
 

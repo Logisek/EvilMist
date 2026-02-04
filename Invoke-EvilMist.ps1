@@ -10,6 +10,7 @@
 .PARAMETER Script
     Name of the script to execute (without .ps1 extension).
     Available scripts:
+    - EntraEnum
     - EntraRecon
     - EntraMFACheck
     - EntraGuestCheck
@@ -73,6 +74,7 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
 
 # Define available scripts mapping
 $AvailableScripts = @{
+    'EntraEnum' = 'Invoke-EntraEnum.ps1'
     'EntraRecon' = 'Invoke-EntraRecon.ps1'
     'EntraMFACheck' = 'Invoke-EntraMFACheck.ps1'
     'EntraGuestCheck' = 'Invoke-EntraGuestCheck.ps1'
@@ -110,6 +112,7 @@ $AvailableScripts = @{
 
 # Script descriptions for display
 $ScriptDescriptions = @{
+    'EntraEnum' = 'Unauthenticated Azure/Entra ID enumeration and reconnaissance'
     'EntraRecon' = 'Comprehensive Azure Entra ID user enumeration and security assessment'
     'EntraMFACheck' = 'Identify users without Multi-Factor Authentication (MFA)'
     'EntraGuestCheck' = 'Guest account enumeration and security analysis'
